@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
@@ -9,12 +10,12 @@ using System.Threading.Tasks;
 
 namespace BusinessObjects.Models
 {
-	public class FUFamilyTreeContext : DbContext
-	{
+	public class FUFamilyTreeContext : IdentityDbContext<Account>
+    {
 		#region DbSet
 		//public DbSet<User> Users { get; set; }
 		#endregion
-		//public FUFamilyTreeContext(DbContextOptions options) : base(options) { }
+		public FUFamilyTreeContext(DbContextOptions options) : base(options) { }
 		public string GetConnectionString()
 		{
 			IConfiguration config = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json", true, true).Build();
@@ -36,34 +37,43 @@ namespace BusinessObjects.Models
 		{
 			base.OnModelCreating(modelBuilder);
 
-			modelBuilder.Entity<Account>(entity =>
-			{
-				entity.ToTable("Account").HasKey(e => e.Id);
-				entity.Property(e => e.Id)
-					.ValueGeneratedOnAdd();
-				entity.Property(e => e.Username)
-					.IsRequired()
-					.HasMaxLength(50)
-					.IsUnicode(false);
-				entity.Property(e => e.Password)
-					.IsRequired()
-					.HasMaxLength(50);
-				entity.Property(e => e.Email)
-					.IsRequired()
-					.HasMaxLength(100)
-					.IsUnicode(false);
-				entity.Property(e => e.PhoneNumber)
-					.HasMaxLength(20)
-					.IsUnicode(false);
-				entity.Property(e => e.Role)
-					.IsRequired()
-					.HasMaxLength(10)
-					.HasDefaultValue("MEMBER")
-					.IsUnicode(false);
-				entity.HasIndex(e => e.Username).IsUnique(true);
-				entity.HasIndex(e => e.Email).IsUnique(true);
-				entity.HasIndex(e => e.PhoneNumber).IsUnique(true);
-			});
+            foreach (var entityType in modelBuilder.Model.GetEntityTypes())
+            {
+                var tableName = entityType.GetTableName();
+                if (tableName.StartsWith("AspNet"))
+                {
+                    entityType.SetTableName(tableName.Substring(6));
+                }
+            }
+
+			//modelBuilder.Entity<Account>(entity =>
+			//{
+			//	entity.ToTable("Account").HasKey(e => e.Id);
+				//entity.Property(e => e.Id)
+				//	.ValueGeneratedOnAdd();
+				//entity.Property(e => e.Username)
+				//	.IsRequired()
+				//	.HasMaxLength(50)
+				//	.IsUnicode(false);
+				//entity.Property(e => e.Password)
+				//	.IsRequired()
+				//	.HasMaxLength(50);
+				//entity.Property(e => e.Email)
+				//	.IsRequired()
+				//	.HasMaxLength(100)
+				//	.IsUnicode(false);
+				//entity.Property(e => e.PhoneNumber)
+				//	.HasMaxLength(20)
+				//	.IsUnicode(false);
+				//entity.Property(e => e.Role)
+				//	.IsRequired()
+				//	.HasMaxLength(10)
+				//	.HasDefaultValue("MEMBER")
+				//	.IsUnicode(false);
+				//entity.HasIndex(e => e.Username).IsUnique(true);
+			//	entity.HasIndex(e => e.Email).IsUnique(true);
+			//	entity.HasIndex(e => e.PhoneNumber).IsUnique(true);
+			//});
 
 			modelBuilder.Entity<Member>(entity =>
 			{

@@ -14,7 +14,7 @@ namespace BusinessObjects.Models
 		public bool Gender { get; set; }
 		public DateTime? BirthDate { get; set; }
 		public int? ParentId { get; set; }
-		public int? AccountId { get; set; }
+		public string AccountId { get; set; }
 		public int? FamilyId { get; set; }
 		public virtual Account Account { get; set; }
 		public virtual Family Family { get; set; }
