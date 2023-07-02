@@ -15,7 +15,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "Group_Projec_FamilyTree": {
+    "Group_Project_FamilyTree": {
       "commandName": "Project",
       "dotnetRunMessages": "true",
       "launchBrowser": true,

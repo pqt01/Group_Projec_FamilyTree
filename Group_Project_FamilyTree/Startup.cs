@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Group_Projec_FamilyTree
+namespace Group_Project_FamilyTree
 {
 	public class Startup
 	{
