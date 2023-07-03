@@ -1,6 +1,9 @@
+using BusinessObjects.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -24,6 +27,19 @@ namespace Group_Project_FamilyTree
 		public void ConfigureServices(IServiceCollection services)
 		{
 			services.AddRazorPages();
+            services.AddDbContext<FUFamilyTreeContext>(options => {
+                string connectString = Configuration.GetConnectionString("DB");
+                options.UseSqlServer(connectString);
+            });
+            // Dang ky Identity
+            services.AddIdentity<Account, IdentityRole>()
+                    .AddEntityFrameworkStores<FUFamilyTreeContext>()
+                    .AddDefaultTokenProviders();
+			services.ConfigureApplicationCookie(options => {
+				options.LoginPath = "/login";
+				options.AccessDeniedPath = "/authenIdentity-false";
+				//options.SlidingExpiration = true;
+			});
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -45,6 +61,7 @@ namespace Group_Project_FamilyTree
 
 			app.UseRouting();
 
+			app.UseAuthentication();
 			app.UseAuthorization();
 
 			app.UseEndpoints(endpoints =>
