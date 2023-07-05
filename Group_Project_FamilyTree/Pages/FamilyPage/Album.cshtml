@@ -1,0 +1,32 @@
+﻿@page
+@model Group_Project_FamilyTree.Pages.FamilyPage.AlbumModel
+
+@{
+	ViewData["Title"] = "Index";
+}
+
+<style>
+	.album {
+		height: 100%;
+		width: 100%;
+	}
+
+	.image {
+		height: 200px;
+		width: 24%;
+		margin-bottom: 5px;
+	}
+</style>
+<h1>Album</h1>
+
+<p>
+	<a class="btn btn-sm btn-success" asp-page="CreateImage">Add image</a>
+</p>
+
+<div class="album">
+	@foreach (var item in Model.Images)
+	{
+		<a asp-page="./DetailsImage" asp-route-id="@item.Id"><img class="image" src="~/image/@item.Url" /></a>
+	}
+</div>
+

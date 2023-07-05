@@ -6,12 +6,13 @@ using System.Threading.Tasks;
 
 namespace BusinessObjects.Models
 {
-	public class Image
+	public class EventAttendees
 	{
 		public int Id { get; set; }
-		public string Url { get; set; }
-		public int FamilyId { get; set; }
-		public DateTime CreateDate { get; set; }
-		public virtual Family Family { get; set; }
+		public int MemberId { get; set; }
+		public int EventId { get; set; }
+		public virtual Event Event { get; set; }
+		public virtual Member Member { get; set; }
+		
 	}
 }

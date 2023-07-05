@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
@@ -18,6 +19,7 @@ namespace BusinessObjects.Models
 		public DbSet<Couple> Couples { get; set; }
 		public DbSet<Image> Images { get; set; }
 		public DbSet<Event> Events { get; set; }
+		public DbSet<EventAttendees> EventAttendees { get; set; }
 		public DbSet<Service> Services { get; set; }
 		public DbSet<Location> Locations { get; set; }
 		#endregion
@@ -163,6 +165,22 @@ namespace BusinessObjects.Models
 					.WithMany(e => e.Events)
 					.HasForeignKey(e => e.LocationId)
 					.HasConstraintName("FK_Event_Location");
+			});
+			modelBuilder.Entity<EventAttendees>(entity =>
+			{
+				entity.ToTable("EventAttendees").HasKey(e => e.Id);
+				entity.Property(e => e.Id)
+					.ValueGeneratedOnAdd();
+				entity.HasOne(e => e.Member)
+					.WithMany(e => e.EventAttendees)
+					.HasForeignKey(e => e.MemberId)
+					.HasConstraintName("FK_EventAttendees_Member")
+					.OnDelete(DeleteBehavior.NoAction);
+				entity.HasOne(e => e.Event)
+					.WithMany(e => e.EventAttendees)
+					.HasForeignKey(e => e.EventId)
+					.HasConstraintName("FK_EventAttendees_Event")
+					.OnDelete(DeleteBehavior.NoAction); ;
 			});
 			modelBuilder.Entity<Service>(entity =>
 			{

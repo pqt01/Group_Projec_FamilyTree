@@ -22,6 +22,7 @@ namespace BusinessObjects.Models
 		public virtual Couple Parent { get; set; }
 		public virtual ICollection<Couple> CouplesFather { get; set; }
 		public virtual ICollection<Couple> CouplesMother { get; set; }
+		public virtual ICollection<EventAttendees> EventAttendees { get; set; }
 
 	}
 }

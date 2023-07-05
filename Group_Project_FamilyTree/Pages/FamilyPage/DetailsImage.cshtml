@@ -1,0 +1,33 @@
+﻿@page
+@model Group_Project_FamilyTree.Pages.FamilyPage.DetailsImageModel
+
+@{
+	ViewData["Title"] = "Details";
+}
+
+<style>
+	.album {
+		height: 100%;
+		width: 100%;
+	}
+
+	.image {
+		height: 100%;
+		width: 100%;
+	}
+</style>
+
+<div class="d-flex">
+	<h1>
+		Details
+	</h1>
+	<div class="ml-auto">
+		<a class="btn btn-sm btn-danger" asp-page="./DeleteImage" asp-route-id="@Model.Image.Id">Delete</a>
+		<a class="btn btn-sm btn-info" asp-page="Album">Back to List</a>
+	</div>
+</div>
+<hr />
+
+<div class="album">
+	<a><img class="image" src="~/image/@Model.Image.Url" /></a>
+</div>

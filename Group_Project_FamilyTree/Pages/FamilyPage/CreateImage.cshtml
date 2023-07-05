@@ -1,0 +1,31 @@
+﻿@page
+@model Group_Project_FamilyTree.Pages.FamilyPage.CreateImageModel
+
+@{
+	ViewData["Title"] = "Create";
+}
+<div class="d-flex">
+	<h1>
+		Add image
+	</h1>
+	<div class="ml-auto">
+		<a class="btn btn-sm btn-info" asp-page="Album">Back to List</a>
+	</div>
+</div>
+<hr />
+<form method="post" enctype="multipart/form-data">
+	<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+	<label asp-for="@Model.FileUploads"></label>
+	<input asp-for="@Model.FileUploads" />
+	<span asp-validation-formaction="@Model.FileUploads"></span>
+	<div class="form-group">
+		<input type="submit" value="Add" class="btn btn-primary" />
+	</div>
+</form>
+
+
+@section Scripts {
+	@{
+		await Html.RenderPartialAsync("_ValidationScriptsPartial");
+	}
+}
