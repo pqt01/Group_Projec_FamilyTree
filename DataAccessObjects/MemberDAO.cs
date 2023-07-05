@@ -20,6 +20,10 @@ namespace DataAccessObjects
 		{
 			return _context.Members.FirstOrDefault(m => m.AccountId == id);
 		}
+		public Member GetById(int id)
+		{
+			return _context.Members.FirstOrDefault(m => m.Id == id);
+		}
 
 		//public List<FlowerBouquet> SearchFlowerBouquetByName(string searchString)
 		//{
@@ -29,21 +33,16 @@ namespace DataAccessObjects
 		//}
 
 
-		//public void Add(FlowerBouquet flowerBouquet)
-		//{
-		//	flowerBouquet.FlowerBouquetId = GenerateFlowerBouquetId();
-		//	flowerBouquet.FlowerBouquetStatus = 1;
-		//	_context.Add(flowerBouquet);
-		//	_context.SaveChanges();
-		//}
-		//public void UpdateAttach(FlowerBouquet flowerBouquet)
-		//{
-		//	if (GetFloBouById(flowerBouquet.FlowerBouquetId) != null)
-		//	{
-		//		_context.Attach(flowerBouquet).State = EntityState.Modified;
-		//		_context.SaveChanges();
-		//	}
-		//}
+		public void Add(Member member)
+		{
+			_context.Add(member);
+			_context.SaveChanges();
+		}
+		public void UpdateAttach(Member member)
+		{
+			_context.Attach(member).State = EntityState.Modified;
+			_context.SaveChanges();
+		}
 		//public void Delete(int id)
 		//{
 		//	var flo = GetFloBouById(id);

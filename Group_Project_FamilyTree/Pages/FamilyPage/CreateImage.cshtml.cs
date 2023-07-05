@@ -16,6 +16,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Identity;
 using Repositorys.Interface;
 using Repositorys;
+using Group_Project_FamilyTree.Helper;
 
 namespace Group_Project_FamilyTree.Pages.FamilyPage
 {
@@ -23,31 +24,25 @@ namespace Group_Project_FamilyTree.Pages.FamilyPage
 	{
 		private readonly IMemberRepository _memRepo;
 		private readonly IImageRepository _imgRepo;
-		private readonly IWebHostEnvironment _environment;
 		private readonly UserManager<Account> _userManager;
-		private readonly SignInManager<Account> _signInManager;
+		private readonly UploadImage _uploadImage;
 		public CreateImageModel(IWebHostEnvironment environment,
-			SignInManager<Account> signInManager,
 			UserManager<Account> userManager)
 		{
 			_memRepo = new MemberRepository();
 			_imgRepo = new ImageRepository();
-			_environment = environment;
 			_userManager = userManager;
-			_signInManager = signInManager;
+			_uploadImage = new UploadImage(environment);
 		}
 
-		public void OnGet()
-		{
-		}
+		public void OnGet() { }
+
 		[Required]
 		[DataType(DataType.Upload)]
 		[CheckFileExtensions(Extensions = "png,jpg,jpeg,gif")]
 		[Display(Name = "Image upload")]
 		[BindProperty]
 		public IFormFile[] FileUploads { get; set; }
-		//[BindProperty]
-		//      public Image Image { get; set; }
 
 		public async Task<IActionResult> OnPostAsync()
 		{
@@ -60,25 +55,16 @@ namespace Group_Project_FamilyTree.Pages.FamilyPage
 			{
 				foreach (var FileUpload in FileUploads)
 				{
-					string newFileName = Guid.NewGuid().ToString() + Path.GetExtension(FileUpload.FileName);
-					while (System.IO.File.Exists(Path.Combine(_environment.WebRootPath, "image", newFileName)))
-					{
-						newFileName = Guid.NewGuid().ToString() + Path.GetExtension(FileUpload.FileName);
-					}
-					ModelState.AddModelError(string.Empty, Path.Combine(_environment.WebRootPath, "image", newFileName));
+					string fileName = _uploadImage.GetImageFileName(FileUpload);
 
 					Image image = new Image();
 					string id = _userManager.GetUserId(User);
 					Member member = _memRepo.GetMemberByAccountId(id);
 					image.FamilyId = (int)member.FamilyId;
-					image.Url = newFileName;
+					image.Url = fileName;
 					_imgRepo.Add(image);
 
-					var file = Path.Combine(_environment.WebRootPath, "image", newFileName);
-					using (var fileStream = new FileStream(file, FileMode.Create))
-					{
-						await FileUpload.CopyToAsync(fileStream);
-					}
+					await _uploadImage.WriteImageFileAsync(FileUpload, fileName);
 				}
 			}
 

@@ -4,14 +4,16 @@ using BusinessObjects.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BusinessObjects.Migrations
 {
     [DbContext(typeof(FUFamilyTreeContext))]
-    partial class FUFamilyTreeContextModelSnapshot : ModelSnapshot
+    [Migration("20230705112106_init_db_v4")]
+    partial class init_db_v4
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -198,7 +200,7 @@ namespace BusinessObjects.Migrations
                     b.Property<DateTime>("CreateDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValueSql("getdate()");
+                        .HasDefaultValue(new DateTime(2023, 7, 5, 18, 21, 6, 3, DateTimeKind.Local).AddTicks(1269));
 
                     b.Property<int>("FamilyId")
                         .HasColumnType("int");

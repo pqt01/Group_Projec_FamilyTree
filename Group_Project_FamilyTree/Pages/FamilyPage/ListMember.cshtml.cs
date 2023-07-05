@@ -8,28 +8,35 @@ using Microsoft.EntityFrameworkCore;
 using BusinessObjects.Models;
 using Repositorys.Interface;
 using Repositorys;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Http;
+using System.ComponentModel.DataAnnotations;
+using System.Xml.Linq;
 
 namespace Group_Project_FamilyTree.Pages.FamilyPage
 {
     public class ListMemberModel : PageModel
     {
-        private readonly IMemberRepository _memberRepo;
+        private readonly IMemberRepository _memRepo;
+		private readonly UserManager<Account> _userManager;
 
-        public ListMemberModel()
+		public ListMemberModel(UserManager<Account> userManager)
         {
-			_memberRepo = new MemberRepository();
+			_memRepo = new MemberRepository();
+			_userManager = userManager;
         }
 
         public IList<Member> Member { get;set; }
-
-		public void OnGet(int? familyId)
+		
+		public void OnGet()
 		{
-			familyId = 2;
-			if (familyId != null)
+			string id = _userManager.GetUserId(User);
+			Member m = _memRepo.GetMemberByAccountId(id);
+			int i = (int)m.FamilyId;
+			if (m != null)
 			{
-				Member = _memberRepo.GetAllFamyliById((int)familyId);
+				Member = _memRepo.GetAllFamyliById((int)m.FamilyId);
 			}
-			//return RedirectToPage("/AuthencationFale");
 		}
 	}
 }

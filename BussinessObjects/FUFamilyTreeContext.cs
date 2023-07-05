@@ -35,10 +35,10 @@ namespace BusinessObjects.Models
 		{
 			//if (!optionsBuilder.IsConfigured)
 			//{
-			optionsBuilder.UseSqlServer(GetConnectionString());
-			//		.LogTo(s => System.Diagnostics.Debug.WriteLine(s))
-			//			 .EnableDetailedErrors()
-			//			 .EnableSensitiveDataLogging();
+				optionsBuilder.UseSqlServer(GetConnectionString());
+				//		.LogTo(s => System.Diagnostics.Debug.WriteLine(s))
+				//			 .EnableDetailedErrors()
+				//			 .EnableSensitiveDataLogging();
 			//	optionsBuilder.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
 			//}
 		}
@@ -143,6 +143,8 @@ namespace BusinessObjects.Models
 				entity.Property(e => e.Url)
 					.IsRequired()
 					.HasMaxLength(400);
+				entity.Property(e => e.CreateDate)
+					.HasDefaultValueSql("getdate()");
 				entity.HasOne(e => e.Family)
 					.WithMany(e => e.Images)
 					.HasForeignKey(e => e.FamilyId)

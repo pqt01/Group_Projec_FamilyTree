@@ -15,5 +15,6 @@ namespace Repositorys
 		public void Add(Image image) => _context.Add(image);
 		public List<Image> GetByFamyliId(int familyId) => _context.GetByFamyliId(familyId);
 		public Image GetById(int id) => _context.GetById(id);
+		public void Delete(Image image) => _context.Delete(image);
 	}
 }

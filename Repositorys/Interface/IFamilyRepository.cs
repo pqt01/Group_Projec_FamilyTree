@@ -7,11 +7,9 @@ using System.Threading.Tasks;
 
 namespace Repositorys.Interface
 {
-	public interface IImageRepository
+	public interface IFamilyRepository
 	{
-		public void Add(Image image);
-		public List<Image> GetByFamyliId(int familyId);
-		public Image GetById(int id);
-		public void Delete(Image image);
+		public void Add(Family family);
+		public Family GetByCreatorIdId(int creatorIdId);
 	}
 }

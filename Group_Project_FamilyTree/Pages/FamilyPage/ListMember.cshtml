@@ -4,7 +4,18 @@
 @{
 	ViewData["Title"] = "ListMember";
 }
+<style>
+	.album {
+		height: 100%;
+		width: 100%;
+	}
 
+	.image {
+		height: 100px;
+		width: 100px;
+		margin-bottom: 1px;
+	}
+</style>
 <h1>List member</h1>
 
 <div class="d-flex">
@@ -17,31 +28,22 @@
 			<button type="submit" class="btn btn-sm btn-info m-1">Search</button>
 		</form>
 	</div>
-	
+
 </div>
 <table class="table">
 	<thead>
 		<tr>
 			<th>
-				@Html.DisplayNameFor(model => model.Member[0].FullName)
+				@Html.DisplayNameFor(model => model.Member[0].LinkAvatar)
 			</th>
 			<th>
-				@Html.DisplayNameFor(model => model.Member[0].LinkAvatar)
+				@Html.DisplayNameFor(model => model.Member[0].FullName)
 			</th>
 			<th>
 				@Html.DisplayNameFor(model => model.Member[0].Gender)
 			</th>
 			<th>
 				@Html.DisplayNameFor(model => model.Member[0].BirthDate)
-			</th>
-			<th>
-				@Html.DisplayNameFor(model => model.Member[0].Account)
-			</th>
-			<th>
-				@Html.DisplayNameFor(model => model.Member[0].Family)
-			</th>
-			<th>
-				@Html.DisplayNameFor(model => model.Member[0].Parent)
 			</th>
 			<th></th>
 		</tr>
@@ -51,30 +53,29 @@
 		{
 			<tr>
 				<td>
+					<img class="image" src="~/image/@item.LinkAvatar" />
+				</td>
+				<td>
 					@Html.DisplayFor(modelItem => item.FullName)
 				</td>
-				<td>
-					@Html.DisplayFor(modelItem => item.LinkAvatar)
-				</td>
-				<td>
-					@Html.DisplayFor(modelItem => item.Gender)
-				</td>
+				@if (@item.Gender == true)
+				{
+					<td>
+						Male
+					</td>
+				}
+				else
+				{
+					<td>
+						Female
+					</td>
+				}
 				<td>
 					@Html.DisplayFor(modelItem => item.BirthDate)
 				</td>
 				<td>
-					@Html.DisplayFor(modelItem => item.Account.Id)
-				</td>
-				<td>
-					@Html.DisplayFor(modelItem => item.Family.Id)
-				</td>
-				<td>
-					@Html.DisplayFor(modelItem => item.Parent.Id)
-				</td>
-				<td>
-					<a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
-					<a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
-					<a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+					<a asp-page="/AccountPage/UpdateProfile" asp-route-id="@item.Id" class="btn btn-sm btn-primary">Edit</a> |
+					<a asp-page="/AccountPage/DetailsProfile" asp-route-id="@item.Id" class="btn btn-sm btn-info">Details</a>
 				</td>
 			</tr>
 		}

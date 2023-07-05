@@ -23,11 +23,16 @@ namespace DataAccessObjects
 		{
 			return _context.Images.FirstOrDefault(i => i.Id == id);
 		}
-
 		public void Add(Image image)
 		{
 			_context.Add(image);
 			_context.SaveChanges();
 		}
+		public void Delete(Image image)
+		{
+			_context.Images.Remove(image);
+			_context.SaveChanges();
+		}
+
 	}
 }
