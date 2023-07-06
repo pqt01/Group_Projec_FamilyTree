@@ -9,10 +9,13 @@ using BusinessObjects.Models;
 using Repositorys.Interface;
 using Microsoft.AspNetCore.Identity;
 using Repositorys;
+using Microsoft.AspNetCore.Authorization;
+using System.Data;
 
 namespace Group_Project_FamilyTree.Pages.FamilyPage
 {
-    public class CreateMemberModel : PageModel
+	[Authorize(Roles = "Member")]
+	public class CreateMemberModel : PageModel
     {
         private readonly IMemberRepository _memRepo;
         private readonly UserManager<Account> _userManager;

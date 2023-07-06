@@ -9,10 +9,13 @@ using BusinessObjects.Models;
 using System.Text.Json;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.AspNetCore.Authorization;
+using System.Data;
 
 namespace Group_Project_FamilyTree.Pages.EventPage
 {
-    public class CreateModel : PageModel
+	[Authorize(Roles = "Member")]
+	public class CreateModel : PageModel
     {
         private readonly BusinessObjects.Models.FUFamilyTreeContext _context;
 

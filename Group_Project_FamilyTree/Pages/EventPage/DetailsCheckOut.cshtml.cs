@@ -11,10 +11,13 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Repositorys.Interface;
 using Repositorys;
+using Microsoft.AspNetCore.Authorization;
+using System.Data;
 
 namespace Group_Project_FamilyTree.Pages.EventPage
 {
-    public class DetailsChecOutModel : PageModel
+	[Authorize(Roles = "Member")]
+	public class DetailsChecOutModel : PageModel
     {
         private readonly BusinessObjects.Models.FUFamilyTreeContext _context;
         private readonly UserManager<Account> _userManager;

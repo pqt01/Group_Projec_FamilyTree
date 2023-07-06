@@ -7,10 +7,13 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BusinessObjects.Models;
+using Microsoft.AspNetCore.Authorization;
+using System.Data;
 
 namespace Group_Project_FamilyTree.Pages.EventPage
 {
-    public class EditModel : PageModel
+	[Authorize(Roles = "Member")]
+	public class EditModel : PageModel
     {
         private readonly BusinessObjects.Models.FUFamilyTreeContext _context;
 

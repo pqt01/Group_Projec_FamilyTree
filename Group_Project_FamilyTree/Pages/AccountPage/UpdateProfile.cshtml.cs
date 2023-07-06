@@ -15,9 +15,12 @@ using System.ComponentModel.DataAnnotations;
 using System.Xml.Linq;
 using Group_Project_FamilyTree.Helper;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Authorization;
+using System.Data;
 
 namespace Group_Project_FamilyTree.Pages.AccountPage
 {
+	[Authorize(Roles = "Member")]
 	public class UpdateProfileModel : PageModel
 	{
 		private readonly IMemberRepository _memRepo;

@@ -8,9 +8,12 @@ using Microsoft.EntityFrameworkCore;
 using BusinessObjects.Models;
 using Repositorys.Interface;
 using Repositorys;
+using Microsoft.AspNetCore.Authorization;
+using System.Data;
 
 namespace Group_Project_FamilyTree.Pages.FamilyPage
 {
+	[Authorize(Roles = "Member")]
 	public class DetailsImageModel : PageModel
 	{
 		private readonly IImageRepository _imgRepo;

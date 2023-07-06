@@ -8,9 +8,12 @@ using System.Collections.Generic;
 using System.Text.Json;
 using DataAccessObjects;
 using System.Linq;
+using Microsoft.AspNetCore.Authorization;
+using System.Data;
 
 namespace Group_Project_FamilyTree.Pages.FamilyPage
 {
+	[Authorize(Roles = "Member")]
 	public class FamilyTreeModel : PageModel
 	{
 		private readonly IMemberRepository _memRepo;

@@ -12,9 +12,12 @@ using Microsoft.Extensions.Hosting;
 using System.IO;
 using Microsoft.AspNetCore.Hosting;
 using Group_Project_FamilyTree.Helper;
+using Microsoft.AspNetCore.Authorization;
+using System.Data;
 
 namespace Group_Project_FamilyTree.Pages.FamilyPage
 {
+	[Authorize(Roles = "Member")]
 	public class DeleteImageModel : PageModel
 	{
 		private readonly IImageRepository _imgRepo;

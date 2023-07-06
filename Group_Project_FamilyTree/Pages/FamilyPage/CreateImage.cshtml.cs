@@ -17,9 +17,12 @@ using Microsoft.AspNetCore.Identity;
 using Repositorys.Interface;
 using Repositorys;
 using Group_Project_FamilyTree.Helper;
+using Microsoft.AspNetCore.Authorization;
+using System.Data;
 
 namespace Group_Project_FamilyTree.Pages.FamilyPage
 {
+	[Authorize(Roles = "Member")]
 	public class CreateImageModel : PageModel
 	{
 		private readonly IMemberRepository _memRepo;

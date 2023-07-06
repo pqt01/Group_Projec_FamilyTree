@@ -6,10 +6,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using BusinessObjects.Models;
+using Microsoft.AspNetCore.Authorization;
+using System.Data;
 
 namespace Group_Project_FamilyTree.Pages.EventAttendeesPage
 {
-    public class CreateModel : PageModel
+	[Authorize(Roles = "Member")]
+	public class CreateModel : PageModel
     {
         private readonly BusinessObjects.Models.FUFamilyTreeContext _context;
 

@@ -12,10 +12,13 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Http;
 using System.ComponentModel.DataAnnotations;
 using System.Xml.Linq;
+using Microsoft.AspNetCore.Authorization;
+using System.Data;
 
 namespace Group_Project_FamilyTree.Pages.FamilyPage
 {
-    public class ListMemberModel : PageModel
+	[Authorize(Roles = "Member")]
+	public class ListMemberModel : PageModel
     {
         private readonly IMemberRepository _memRepo;
 		private readonly UserManager<Account> _userManager;
