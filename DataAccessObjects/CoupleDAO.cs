@@ -22,18 +22,46 @@ namespace DataAccessObjects
         public Couple GetById(int id)
         {
             return _context.Couples.FirstOrDefault(c => c.Id == id);
-        }public Couple GetByFaId(int id)
-        {
-            return _context.Couples.FirstOrDefault(c => c.FaId == id);
         }
-        public Couple GetByMoId(int id)
+        public bool IsExistCouple(Member member)
         {
-            return _context.Couples.FirstOrDefault(c => c.MoId == id);
+            if (member.Gender) return _context.Couples
+                .FirstOrDefault(c => c.FaId == member.Id) != null ? true : false;
+            return _context.Couples
+                .FirstOrDefault(c => c.MoId == member.Id) != null ? true : false;
         }
-        //public Member GetById(int id)
-        //{
-        //    return _context.Members.FirstOrDefault(m => m.Id == id);
-        //}
+        public bool IsExistParent(Member parent, Member child)
+        {
+            bool result = false;
+            var couple = _context.Couples.FirstOrDefault(c => c.Id == child.CoupleId);
+            if (parent.Gender && couple.FaId != null)
+            {
+                result = true;
+            }
+            else if (!parent.Gender && couple.MoId != null)
+            {
+                result = true;
+            }
+            return result;
+        }
+        public bool ValidParent(Member parent, Member child)
+        {
+            //chua co coupleId
+            if (child.CoupleId == null) return true;
+            //check is couple
+            if (IsExistCouple(child)) return true;
+            //check parent is correct
+            if (!IsExistParent(parent, child)) return true;
+            return false;
+        }
+        public bool ValidCouple(Member member, Member relationMember)
+        {
+            //chua co coupleId
+            if (relationMember.CoupleId == null) return true;
+            //check gender
+            if (relationMember.Gender == member.Gender) return false;
+            return true;
+        }
         public void Add(Couple couple)
         {
             _context.Add(couple);

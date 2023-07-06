@@ -15,6 +15,7 @@ using Microsoft.Extensions.Logging;
 using BusinessObjects.Models;
 using Repositorys.Interface;
 using Repositorys;
+using Microsoft.EntityFrameworkCore;
 
 namespace Group_Project_FamilyTree.Pages.AccountPage
 {
@@ -24,17 +25,20 @@ namespace Group_Project_FamilyTree.Pages.AccountPage
 	{
 		private readonly SignInManager<Account> _signInManager;
 		private readonly UserManager<Account> _userManager;
+		private readonly RoleManager<IdentityRole> _roleManager;
 		private readonly IMemberRepository _memRepo;
 		private readonly IFamilyRepository _faRepo;
 
 		public RegisterModel(
 			UserManager<Account> userManager,
-			SignInManager<Account> signInManager)
+			SignInManager<Account> signInManager,
+			RoleManager<IdentityRole> roleManager)
 		{
 			_memRepo = new MemberRepository();
 			_faRepo = new FamilyRepository();
 			_userManager = userManager;
 			_signInManager = signInManager;
+			_roleManager = roleManager;
 		}
 
 		[BindProperty]
@@ -108,6 +112,9 @@ namespace Group_Project_FamilyTree.Pages.AccountPage
 					member.FamilyId = family.Id;
 					_memRepo.UpdateAttach(member);
 
+					//role
+					List<string> roleNames = await _roleManager.Roles.Select(r => r.Name).ToListAsync();
+					var resultAdd = await _userManager.AddToRolesAsync(user, roleNames.Where(r => r == "Member"));
 					if (_userManager.Options.SignIn.RequireConfirmedAccount)
 					{
 						return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl });

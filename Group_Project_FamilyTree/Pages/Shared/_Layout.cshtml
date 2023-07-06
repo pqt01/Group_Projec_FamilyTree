@@ -4,7 +4,7 @@
 @inject SignInManager<Account> SignInManager
 @inject UserManager<Account> UserManager
 @{
-	Account a = await UserManager.GetUserAsync(User);
+	Account user = await UserManager.GetUserAsync(User);
 }
 <!DOCTYPE html>
 <html lang="en">
@@ -34,7 +34,7 @@
 						</li>
 						@if (SignInManager.IsSignedIn(User))
 						{
-							@if (await UserManager.IsInRoleAsync(a, "Member"))
+							@if (await UserManager.IsInRoleAsync(user, "Member"))
 							{
 								<li class="nav-item">
 									<a class="nav-link text-dark" asp-area="" asp-page="/FamilyPage/ListMember">Family</a>
@@ -42,7 +42,7 @@
 								<li class="nav-item">
 									<a class="nav-link text-dark" asp-area="" asp-page="/FamilyPage/Album">Album</a>
 								</li>
-							}@if (await UserManager.IsInRoleAsync(await UserManager.GetUserAsync(User), "Admin"))
+							}@if (await UserManager.IsInRoleAsync(user, "Admin"))
 							{
 								<li class="nav-item">
 									<a class="nav-link text-dark" asp-area="" asp-page="/Accounts/Index">Accounts</a>

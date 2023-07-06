@@ -91,8 +91,7 @@ namespace BusinessObjects.Models
 					.IsRequired()
 					.HasMaxLength(300);
 				entity.Property(e => e.Gender)
-					.IsRequired()
-					.HasDefaultValue(true);
+					.IsRequired();
 				entity.HasOne(e => e.Account)
 					.WithOne(e => e.Member)
 					.HasForeignKey<Member>(e => e.AccountId)

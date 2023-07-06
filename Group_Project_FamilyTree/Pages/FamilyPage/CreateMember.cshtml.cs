@@ -43,24 +43,21 @@ namespace Group_Project_FamilyTree.Pages.FamilyPage
                 GetData();
                 return Page();
             }
+			string id = _userManager.GetUserId(User);
+			Member m = _memRepo.GetMemberByAccountId(id);
+			Member.FamilyId = m.FamilyId;
+
+            if(_memRepo.AddMemberFamilyTree(Member, Relationship, RelationshipMemberId))
+				return RedirectToPage("./ListMember");
+
             GetData();
-            ModelState.AddModelError(string.Empty, Relationship.ToString());
-            ModelState.AddModelError(string.Empty, RelationshipMemberId.ToString());
-            ModelState.AddModelError(string.Empty, Member.ToString());
-
-            //Member.
-            _memRepo.AddMemberFamilyTree(Member, Relationship, RelationshipMemberId);
+            ModelState.AddModelError(string.Empty, "Create fail!");
             return Page();
-            //_context.Members.Add(Member);
-            //await _context.SaveChangesAsync();
-
-            return RedirectToPage("./ListMember");
-        }
+		}
         private void GetData()
         {
             string id = _userManager.GetUserId(User);
             Member m = _memRepo.GetMemberByAccountId(id);
-            Member.FamilyId = m.FamilyId;
             if (m != null)
             {
                 var memberList = _memRepo.GetAllFamyliById((int)m.FamilyId);
