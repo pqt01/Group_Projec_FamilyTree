@@ -20,14 +20,14 @@ namespace Group_Project_FamilyTree.Pages.AccountPage
 	{
 		private readonly UserManager<Account> _userManager;
 		private readonly SignInManager<Account> _signInManager;
-		private readonly AccountDAO _accRepo;
+		//private readonly AccountDAO _accRepo;
 
 		public LoginModel(SignInManager<Account> signInManager,
 			UserManager<Account> userManager)
 		{
 			_userManager = userManager;
 			_signInManager = signInManager;
-			_accRepo = new AccountDAO();
+			//_accRepo = new AccountDAO();
 		}
 
 		[BindProperty]

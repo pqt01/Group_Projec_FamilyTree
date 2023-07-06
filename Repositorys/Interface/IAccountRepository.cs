@@ -1,12 +1,17 @@
-﻿using System;
+﻿using BusinessObjects.Models;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Repositorys.Interface
 {
-	public interface IAccountRepository
-	{
-	}
+    public interface IAccountRepository
+    {
+        Account GetByEmail(string email);
+        Account GetAccountById(int id);
+        List<Account> GetListAccountByName(string name);
+        void Add(Account account);
+        List<Account> GetAll();
+        int Update(Account account);
+        void Delete(int accId);
+        Account CheckLogin(string email, string password);
+    }
 }

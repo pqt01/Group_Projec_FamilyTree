@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BusinessObjects.Models
 {
@@ -22,5 +19,5 @@ namespace BusinessObjects.Models
 		public virtual Location Location { get; set; }
 		public virtual ICollection<EventAttendees> EventAttendees { get; set; }
 
-	}
+    }
 }
