@@ -10,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Repositorys;
 using Repositorys.Interface;
+using System;
 
 namespace Group_Project_FamilyTree
 {
@@ -70,12 +71,9 @@ namespace Group_Project_FamilyTree
             app.UseSession();
             app.UseStaticFiles();
 
-<<<<<<< HEAD
+
 			app.UseRouting();
-			app.UseSession();
-=======
             app.UseRouting();
->>>>>>> 8a3a13e37227f66efc55222a6433a4a8b1fee230
 
 			app.UseAuthentication();
 			app.UseAuthorization();

@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using BusinessObjects.Models;
 
-namespace Group_Project_FamilyTree.Pages.MemberPage
+namespace Group_Project_FamilyTree.Pages.EventAttendeesPage
 {
     public class CreateModel : PageModel
     {
@@ -20,14 +20,13 @@ namespace Group_Project_FamilyTree.Pages.MemberPage
 
         public IActionResult OnGet()
         {
-        ViewData["AccountId"] = new SelectList(_context.Users, "Id", "Id");
-        ViewData["FamilyId"] = new SelectList(_context.Families, "Id", "Id");
-        ViewData["ParentId"] = new SelectList(_context.Couples, "Id", "Id");
+        ViewData["EventId"] = new SelectList(_context.Events.Where(e => e.OrganizeDate > DateTime.Now), "Id", "Id");
+        ViewData["MemberId"] = new SelectList(_context.Members, "Id", "FullName");
             return Page();
         }
 
         [BindProperty]
-        public Member Member { get; set; }
+        public EventAttendees EventAttendees { get; set; }
 
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public async Task<IActionResult> OnPostAsync()
@@ -37,7 +36,7 @@ namespace Group_Project_FamilyTree.Pages.MemberPage
                 return Page();
             }
 
-            _context.Members.Add(Member);
+            _context.EventAttendees.Add(EventAttendees);
             await _context.SaveChangesAsync();
 
             return RedirectToPage("./Index");

@@ -19,8 +19,4 @@
     <ProjectReference Include="..\Repositorys\Repositorys.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Pages\EventAttendees\" />
-  </ItemGroup>
-
 </Project>

@@ -8,16 +8,25 @@ using Microsoft.EntityFrameworkCore;
 using BusinessObjects.Models;
 using System.Text.Json;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
+using Repositorys.Interface;
+using Repositorys;
 
 namespace Group_Project_FamilyTree.Pages.EventPage
 {
     public class DetailsChecOutModel : PageModel
     {
         private readonly BusinessObjects.Models.FUFamilyTreeContext _context;
+        private readonly UserManager<Account> _userManager;
+        private readonly IMemberRepository _memRepo;
 
-        public DetailsChecOutModel(BusinessObjects.Models.FUFamilyTreeContext context)
+        public DetailsChecOutModel(BusinessObjects.Models.FUFamilyTreeContext context , UserManager<Account> userManager)
         {
+            _userManager = userManager;
+
             _context = context;
+            _memRepo = new MemberRepository();
+
         }
 
         public Event Event { get; set; }
@@ -42,7 +51,9 @@ namespace Group_Project_FamilyTree.Pages.EventPage
             Event.Service = null;
             Event.Location = null;
             // Lay data DB
-            Event.FamilyId = 4; 
+            string id = _userManager.GetUserId(User);
+            Member m = _memRepo.GetMemberByAccountId(id);
+            Event.FamilyId = (int)m.FamilyId; 
             
             _context.Events.Add(Event);
             await _context.SaveChangesAsync();

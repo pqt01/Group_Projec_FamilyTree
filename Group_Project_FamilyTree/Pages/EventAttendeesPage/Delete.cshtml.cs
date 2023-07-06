@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using BusinessObjects.Models;
 
-namespace Group_Project_FamilyTree.Pages.MemberPage
+namespace Group_Project_FamilyTree.Pages.EventAttendeesPage
 {
     public class DeleteModel : PageModel
     {
@@ -19,7 +19,7 @@ namespace Group_Project_FamilyTree.Pages.MemberPage
         }
 
         [BindProperty]
-        public Member Member { get; set; }
+        public EventAttendees EventAttendees { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -28,12 +28,11 @@ namespace Group_Project_FamilyTree.Pages.MemberPage
                 return NotFound();
             }
 
-            Member = await _context.Members
-                .Include(m => m.Account)
-                .Include(m => m.Family)
-                .Include(m => m.Parent).FirstOrDefaultAsync(m => m.Id == id);
+            EventAttendees = await _context.EventAttendees
+                .Include(e => e.Event)
+                .Include(e => e.Member).FirstOrDefaultAsync(m => m.Id == id);
 
-            if (Member == null)
+            if (EventAttendees == null)
             {
                 return NotFound();
             }
@@ -47,11 +46,11 @@ namespace Group_Project_FamilyTree.Pages.MemberPage
                 return NotFound();
             }
 
-            Member = await _context.Members.FindAsync(id);
+            EventAttendees = await _context.EventAttendees.FindAsync(id);
 
-            if (Member != null)
+            if (EventAttendees != null)
             {
-                _context.Members.Remove(Member);
+                _context.EventAttendees.Remove(EventAttendees);
                 await _context.SaveChangesAsync();
             }
 

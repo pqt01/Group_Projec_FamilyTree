@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using BusinessObjects.Models;
 
-namespace Group_Project_FamilyTree.Pages.MemberPage
+namespace Group_Project_FamilyTree.Pages.EventAttendeesPage
 {
     public class IndexModel : PageModel
     {
@@ -18,14 +18,13 @@ namespace Group_Project_FamilyTree.Pages.MemberPage
             _context = context;
         }
 
-        public IList<Member> Member { get;set; }
+        public IList<EventAttendees> EventAttendees { get;set; }
 
         public async Task OnGetAsync()
         {
-            Member = await _context.Members
-                .Include(m => m.Account)
-                .Include(m => m.Family)
-                .Include(m => m.Parent).ToListAsync();
+            EventAttendees = await _context.EventAttendees
+                .Include(e => e.Event)
+                .Include(e => e.Member).ToListAsync();
         }
     }
 }
