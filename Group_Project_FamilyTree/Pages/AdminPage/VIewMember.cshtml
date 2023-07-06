@@ -1,0 +1,61 @@
+﻿@page
+@model Group_Project_FamilyTree.Pages.AdminPage.ViewMemberModel
+
+@{
+    ViewData["Title"] = "ViewMemberModel";
+}
+
+<style>
+	.image {
+		height: 100px;
+		width: 100px;
+		margin-bottom: 1px;
+	}
+</style>
+
+<h1>Members</h1>
+
+<div class="ml-auto">
+    <form method="get" asp-page="./Index">
+        <input class="p-0" name="SearchString" placeholder="Search ..." />
+        <button type="submit" class="btn btn-sm btn-info m-1">Search</button>
+    </form>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Member[0].FullName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Member[0].LinkAvatar)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Member[0].Gender)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Member[0].BirthDate)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Member) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.FullName)
+            </td>
+            <td>
+                    <img class="image" src="~/image/@item.LinkAvatar" />
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Gender)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BirthDate)
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

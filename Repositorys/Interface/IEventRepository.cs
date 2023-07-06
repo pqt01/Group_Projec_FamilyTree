@@ -14,5 +14,6 @@ namespace Repositorys.Interface
         List<Family> GetFamilies();
         List<Service> GetServices();
         List<Location> GetLocations();
+        List<Event> GetEvents();
     }
 }

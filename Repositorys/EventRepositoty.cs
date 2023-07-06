@@ -21,5 +21,6 @@ namespace Repositorys
         public List<Family> GetFamilies() => _dao.GetFamilies();
         public List<Service> GetServices() => _dao.GetServices();
         public List<Location> GetLocations() => _dao.GetLocations();
-    }
+		public List<Event> GetEvents() => _dao.GetAll();
+	}
 }

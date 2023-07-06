@@ -1,10 +1,7 @@
 ﻿using BusinessObjects.Models;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DataAccessObjects
 {
@@ -15,11 +12,11 @@ namespace DataAccessObjects
 		{
 			_context = new FUFamilyTreeContext();
 		}
-        public int GetMaxId()
-        {
-            return _context.Members.Max(m => m.Id);
-        }
-        public Member GetMemberByAccountId(string id)
+		public int GetMaxId()
+		{
+			return _context.Members.Max(m => m.Id);
+		}
+		public Member GetMemberByAccountId(string id)
 		{
 			return _context.Members.FirstOrDefault(m => m.AccountId == id);
 		}
@@ -34,7 +31,10 @@ namespace DataAccessObjects
 		//		.Include(f => f.Category)
 		//		.Include(f => f.Supplier).ToList();
 		//}
-
+		public List<Member> GetAll()
+		{
+			return _context.Members.ToList();
+		}
 
 		public void Add(Member member)
 		{

@@ -11,5 +11,6 @@ namespace Repositorys.Interface
 		public void Add(Member member);
 		public bool AddMemberFamilyTree(Member member, int relationId, int relationMemberId);
 		public void UpdateAttach(Member member);
-	}
+        public List<Member> GetMembers();
+    }
 }

@@ -17,9 +17,9 @@ namespace Repositorys
 		public bool AddMemberFamilyTree(Member member, int relationId, int relationMemberId)
 		{
 			bool result = true;
-            Member child = _context.GetById(relationMemberId);
-            Couple couple = new Couple();
-            switch (relationId)
+			Member child = _context.GetById(relationMemberId);
+			Couple couple = new Couple();
+			switch (relationId)
 			{
 				//parent of
 				case 1:
@@ -47,15 +47,15 @@ namespace Repositorys
 					break;
 				//couple of
 				case 2:
-                    if (!_cpDao.ValidCouple(member, child)) return false;
-                    //create member
-                    _context.Add(member);
-                    //create couple
-                    if (_cpDao.IsExistCouple(child))
+					if (!_cpDao.ValidCouple(member, child)) return false;
+					//create member
+					_context.Add(member);
+					//create couple
+					if (_cpDao.IsExistCouple(child))
 					{
-                        couple =_cpDao.GetById((int)child.CoupleId);
+						couple = _cpDao.GetById((int)child.CoupleId);
 						if (member.Gender == true) { couple.FaId = member.Id; }
-											else { couple.MoId = member.Id; }
+						else { couple.MoId = member.Id; }
 						//change parent
 						_cpDao.UpdateAttach(couple);
 						//update couple Id
@@ -65,27 +65,29 @@ namespace Repositorys
 					else
 					{
 						couple = new Couple();
-						if (child.CoupleId!=null)
+						if (child.CoupleId != null)
 						{
 							couple.ParentId = child.CoupleId;
 						}
-                        if (member.Gender == true) { 
+						if (member.Gender == true)
+						{
 							couple.FaId = member.Id;
 							couple.MoId = child.Id;
 						}
-                        else { 
-							couple.MoId = member.Id; 
-							couple.FaId = child.Id; 
+						else
+						{
+							couple.MoId = member.Id;
+							couple.FaId = child.Id;
 						}
 						//craete couple
 						_cpDao.Add(couple);
 						//update member
 						int tmpId = _cpDao.GetMaxId();
 						child.CoupleId = tmpId;
-						member.CoupleId= tmpId;
+						member.CoupleId = tmpId;
 						_context.UpdateAttach(child);
-                    }
-                    break;
+					}
+					break;
 				//child of
 				case 3:
 					break;
@@ -94,5 +96,6 @@ namespace Repositorys
 			}
 			return result;
 		}
+		public List<Member> GetMembers() => _context.GetAll();
 	}
 }
