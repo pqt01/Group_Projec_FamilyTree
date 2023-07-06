@@ -1,0 +1,66 @@
+﻿@page
+@model Group_Project_FamilyTree.Pages.MemberPage.IndexModel
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Member[0].FullName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Member[0].LinkAvatar)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Member[0].Gender)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Member[0].BirthDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Member[0].Account)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Member[0].Family)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Member[0].Parent)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Member) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.FullName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LinkAvatar)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Gender)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BirthDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Account.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Family.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Parent.Id)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

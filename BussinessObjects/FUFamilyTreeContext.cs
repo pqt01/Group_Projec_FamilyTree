@@ -11,10 +11,17 @@ using System.Threading.Tasks;
 namespace BusinessObjects.Models
 {
 	public class FUFamilyTreeContext : IdentityDbContext<Account>
-    {
+	{
 		#region DbSet
-		//public DbSet<User> Users { get; set; }
+		public DbSet<Member> Members { get; set; }
+		public DbSet<Family> Families { get; set; }
+		public DbSet<Couple> Couples { get; set; }
+		public DbSet<Image> Images { get; set; }
+		public DbSet<Event> Events { get; set; }
+		public DbSet<Service> Services { get; set; }
+		public DbSet<Location> Locations { get; set; }
 		#endregion
+		public FUFamilyTreeContext() { }
 		public FUFamilyTreeContext(DbContextOptions options) : base(options) { }
 		public string GetConnectionString()
 		{
@@ -26,7 +33,7 @@ namespace BusinessObjects.Models
 		{
 			//if (!optionsBuilder.IsConfigured)
 			//{
-			optionsBuilder.UseSqlServer("server =(local);database=FUFamilyTree;uid=sa;pwd=12345;TrustServerCertificate=True");
+			optionsBuilder.UseSqlServer(GetConnectionString());
 			//		.LogTo(s => System.Diagnostics.Debug.WriteLine(s))
 			//			 .EnableDetailedErrors()
 			//			 .EnableSensitiveDataLogging();
@@ -37,40 +44,40 @@ namespace BusinessObjects.Models
 		{
 			base.OnModelCreating(modelBuilder);
 
-            foreach (var entityType in modelBuilder.Model.GetEntityTypes())
-            {
-                var tableName = entityType.GetTableName();
-                if (tableName.StartsWith("AspNet"))
-                {
-                    entityType.SetTableName(tableName.Substring(6));
-                }
-            }
+			foreach (var entityType in modelBuilder.Model.GetEntityTypes())
+			{
+				var tableName = entityType.GetTableName();
+				if (tableName.StartsWith("AspNet"))
+				{
+					entityType.SetTableName(tableName.Substring(6));
+				}
+			}
 
 			//modelBuilder.Entity<Account>(entity =>
 			//{
 			//	entity.ToTable("Account").HasKey(e => e.Id);
-				//entity.Property(e => e.Id)
-				//	.ValueGeneratedOnAdd();
-				//entity.Property(e => e.Username)
-				//	.IsRequired()
-				//	.HasMaxLength(50)
-				//	.IsUnicode(false);
-				//entity.Property(e => e.Password)
-				//	.IsRequired()
-				//	.HasMaxLength(50);
-				//entity.Property(e => e.Email)
-				//	.IsRequired()
-				//	.HasMaxLength(100)
-				//	.IsUnicode(false);
-				//entity.Property(e => e.PhoneNumber)
-				//	.HasMaxLength(20)
-				//	.IsUnicode(false);
-				//entity.Property(e => e.Role)
-				//	.IsRequired()
-				//	.HasMaxLength(10)
-				//	.HasDefaultValue("MEMBER")
-				//	.IsUnicode(false);
-				//entity.HasIndex(e => e.Username).IsUnique(true);
+			//entity.Property(e => e.Id)
+			//	.ValueGeneratedOnAdd();
+			//entity.Property(e => e.Username)
+			//	.IsRequired()
+			//	.HasMaxLength(50)
+			//	.IsUnicode(false);
+			//entity.Property(e => e.Password)
+			//	.IsRequired()
+			//	.HasMaxLength(50);
+			//entity.Property(e => e.Email)
+			//	.IsRequired()
+			//	.HasMaxLength(100)
+			//	.IsUnicode(false);
+			//entity.Property(e => e.PhoneNumber)
+			//	.HasMaxLength(20)
+			//	.IsUnicode(false);
+			//entity.Property(e => e.Role)
+			//	.IsRequired()
+			//	.HasMaxLength(10)
+			//	.HasDefaultValue("MEMBER")
+			//	.IsUnicode(false);
+			//entity.HasIndex(e => e.Username).IsUnique(true);
 			//	entity.HasIndex(e => e.Email).IsUnique(true);
 			//	entity.HasIndex(e => e.PhoneNumber).IsUnique(true);
 			//});

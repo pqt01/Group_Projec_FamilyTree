@@ -6,10 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using BusinessObjects.Models;
-using System.Text.Json;
-using Microsoft.AspNetCore.Http;
 
-namespace Group_Project_FamilyTree.Pages.EventPage
+namespace Group_Project_FamilyTree.Pages.MemberPage
 {
     public class CreateModel : PageModel
     {
@@ -22,14 +20,14 @@ namespace Group_Project_FamilyTree.Pages.EventPage
 
         public IActionResult OnGet()
         {
+        ViewData["AccountId"] = new SelectList(_context.Users, "Id", "Id");
         ViewData["FamilyId"] = new SelectList(_context.Families, "Id", "Id");
-        ViewData["LocationId"] = new SelectList(_context.Locations, "Id", "Name");
-        ViewData["ServiceId"] = new SelectList(_context.Services, "Id", "Name");
+        ViewData["ParentId"] = new SelectList(_context.Couples, "Id", "Id");
             return Page();
         }
 
         [BindProperty]
-        public Event Event { get; set; }
+        public Member Member { get; set; }
 
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public async Task<IActionResult> OnPostAsync()
@@ -38,15 +36,11 @@ namespace Group_Project_FamilyTree.Pages.EventPage
             {
                 return Page();
             }
-            Event.CreateDate = DateTime.Now;
-            Event.Service = _context.Services.FirstOrDefault(s => s.Id == Event.ServiceId);
-            Event.Location = _context.Locations.FirstOrDefault(s => s.Id == Event.LocationId);
-            HttpContext.Session.SetString("card", JsonSerializer.Serialize(Event));
 
-            //_context.Events.Add(Event);
-            //await _context.SaveChangesAsync();
+            _context.Members.Add(Member);
+            await _context.SaveChangesAsync();
 
-            return RedirectToPage("./DetailsCheckOut");
+            return RedirectToPage("./Index");
         }
     }
 }
