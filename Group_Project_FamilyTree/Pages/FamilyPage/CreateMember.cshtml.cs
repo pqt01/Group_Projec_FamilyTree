@@ -6,41 +6,94 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using BusinessObjects.Models;
+using Repositorys.Interface;
+using Microsoft.AspNetCore.Identity;
+using Repositorys;
 
 namespace Group_Project_FamilyTree.Pages.FamilyPage
 {
     public class CreateMemberModel : PageModel
     {
-        private readonly BusinessObjects.Models.FUFamilyTreeContext _context;
+        private readonly IMemberRepository _memRepo;
+        private readonly UserManager<Account> _userManager;
 
-        public CreateMemberModel(BusinessObjects.Models.FUFamilyTreeContext context)
+        public CreateMemberModel(UserManager<Account> userManager)
         {
-            _context = context;
+            _memRepo = new MemberRepository();
+            _userManager = userManager;
         }
 
         public IActionResult OnGet()
         {
-        ViewData["AccountId"] = new SelectList(_context.Users, "Id", "Id");
-        ViewData["FamilyId"] = new SelectList(_context.Families, "Id", "Id");
-        ViewData["ParentId"] = new SelectList(_context.Couples, "Id", "Id");
+            GetData();
             return Page();
         }
 
         [BindProperty]
         public Member Member { get; set; }
+        [BindProperty]
+        public int Relationship { get; set; }
+        [BindProperty]
+        public int RelationshipMemberId { get; set; }
 
-        // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
-        public async Task<IActionResult> OnPostAsync()
+        public IActionResult OnPost()
         {
             if (!ModelState.IsValid)
             {
+                GetData();
                 return Page();
             }
+            GetData();
+            ModelState.AddModelError(string.Empty, Relationship.ToString());
+            ModelState.AddModelError(string.Empty, RelationshipMemberId.ToString());
+            ModelState.AddModelError(string.Empty, Member.ToString());
 
-            _context.Members.Add(Member);
-            await _context.SaveChangesAsync();
+            //Member.
+            _memRepo.AddMemberFamilyTree(Member, Relationship, RelationshipMemberId);
+            return Page();
+            //_context.Members.Add(Member);
+            //await _context.SaveChangesAsync();
 
-            return RedirectToPage("./Index");
+            return RedirectToPage("./ListMember");
+        }
+        private void GetData()
+        {
+            string id = _userManager.GetUserId(User);
+            Member m = _memRepo.GetMemberByAccountId(id);
+            Member.FamilyId = m.FamilyId;
+            if (m != null)
+            {
+                var memberList = _memRepo.GetAllFamyliById((int)m.FamilyId);
+                ViewData["RelationshipMemberId"] =
+                        new SelectList(memberList, "Id", "FullName");
+            }
+        }
+        private bool IsValid(Member member)
+        {
+            bool result = true;
+            string fullName = member.FullName.Trim();
+            string space = " ";
+            if (!fullName.Contains(space))
+            {
+                ModelState.AddModelError("", "Invalid last name or first name");
+                result = false;
+            }
+            string[] arrListStr = fullName.Split(space);
+            for (int i = 0; i < arrListStr.Length; i++)
+            {
+                if (!Char.IsUpper(arrListStr[i][0]))
+                {
+                    ModelState.AddModelError("", "Each word of the candidate Fullname must");
+                    result = false;
+                    break;
+                }
+            }
+            if (Member.BirthDate > DateTime.Now)
+            {
+                ModelState.AddModelError("", "Invalid birthdate");
+                result = false;
+            }
+            return result;
         }
     }
 }

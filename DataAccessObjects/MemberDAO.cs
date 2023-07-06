@@ -15,8 +15,11 @@ namespace DataAccessObjects
 		{
 			_context = new FUFamilyTreeContext();
 		}
-
-		public Member GetMemberByAccountId(string id)
+        public int GetMaxId()
+        {
+            return _context.Members.Max(m => m.Id);
+        }
+        public Member GetMemberByAccountId(string id)
 		{
 			return _context.Members.FirstOrDefault(m => m.AccountId == id);
 		}

@@ -32,7 +32,6 @@ namespace Group_Project_FamilyTree.Pages.FamilyPage
 		{
 			string id = _userManager.GetUserId(User);
 			Member m = _memRepo.GetMemberByAccountId(id);
-			int i = (int)m.FamilyId;
 			if (m != null)
 			{
 				Member = _memRepo.GetAllFamyliById((int)m.FamilyId);
