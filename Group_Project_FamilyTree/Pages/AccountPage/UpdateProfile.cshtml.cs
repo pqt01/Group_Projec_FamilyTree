@@ -14,7 +14,6 @@ using Microsoft.AspNetCore.Http;
 using System.ComponentModel.DataAnnotations;
 using System.Xml.Linq;
 using Group_Project_FamilyTree.Helper;
-using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.Hosting;
 
 namespace Group_Project_FamilyTree.Pages.AccountPage
@@ -55,7 +54,7 @@ namespace Group_Project_FamilyTree.Pages.AccountPage
 		public IFormFile FileUpload { get; set; }
 		public async Task<IActionResult> OnPostAsync()
 		{
-			if (!ModelState.IsValid)
+			if (!ModelState.IsValid || !IsValid(Member))
 			{
 				return Page();
 			}
@@ -80,7 +79,7 @@ namespace Group_Project_FamilyTree.Pages.AccountPage
 			string space = " ";
 			if (!fullName.Contains(space))
 			{
-				ModelState.AddModelError("", "Invalid last name or first name" + fullName);
+				ModelState.AddModelError("", "Invalid last name or first name");
 				result = false;
 			}
 			string[] arrListStr = fullName.Split(space);
@@ -92,6 +91,11 @@ namespace Group_Project_FamilyTree.Pages.AccountPage
 					result = false;
 					break;
 				}
+			}
+			if (Member.BirthDate > DateTime.Now)
+			{
+				ModelState.AddModelError("", "Invalid birthdate");
+				result = false;
 			}
 			return result;
 		}

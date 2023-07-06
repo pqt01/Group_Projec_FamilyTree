@@ -2,12 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BusinessObjects.Models
 {
@@ -103,8 +98,8 @@ namespace BusinessObjects.Models
 					.HasForeignKey<Member>(e => e.AccountId)
 					.HasConstraintName("FK_Member_Account");
 				entity.HasOne(e => e.Parent)
-					.WithMany(e => e.Childs)
-					.HasForeignKey(e => e.ParentId)
+					.WithMany(e => e.ChildsIsMember)
+					.HasForeignKey(e => e.CoupleId)
 					.HasConstraintName("FK_Parent_Member_Couple");
 				entity.HasOne(e => e.Family)
 					.WithMany(e => e.Members)
@@ -124,6 +119,10 @@ namespace BusinessObjects.Models
 					.WithMany(e => e.CouplesMother)
 					.HasForeignKey(e => e.MoId)
 					.HasConstraintName("FK_Mother_Couple_Member");
+				entity.HasOne(e => e.Parent)
+					.WithMany(e => e.ChildsIsCouple)
+					.HasForeignKey(e => e.ParentId)
+					.HasConstraintName("FK_Parent_Couple_Couple");
 			});
 			modelBuilder.Entity<Family>(entity =>
 			{
@@ -215,6 +214,6 @@ namespace BusinessObjects.Models
 					.HasDefaultValue(0);
 			});
 
-		}
-	}
+        }
+    }
 }

@@ -17,7 +17,7 @@ namespace BusinessObjects.Models
 		public bool Gender { get; set; }
 		[DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
 		public DateTime? BirthDate { get; set; }
-		public int? ParentId { get; set; }
+		public int? CoupleId { get; set; }
 		public string AccountId { get; set; }
 		public int? FamilyId { get; set; }
 		public virtual Account Account { get; set; }

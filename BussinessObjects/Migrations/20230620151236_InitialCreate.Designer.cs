@@ -4,14 +4,16 @@ using BusinessObjects.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BusinessObjects.Migrations
 {
     [DbContext(typeof(FUFamilyTreeContext))]
-    partial class FUFamilyTreeContextModelSnapshot : ModelSnapshot
+    [Migration("20230620151236_InitialCreate")]
+    partial class InitialCreate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,67 +23,54 @@ namespace BusinessObjects.Migrations
 
             modelBuilder.Entity("BusinessObjects.Models.Account", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("AccessFailedCount")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Email")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(100)");
 
-                    b.Property<bool>("EmailConfirmed")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("LockoutEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTimeOffset?>("LockoutEnd")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("NormalizedEmail")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("NormalizedUserName")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("PasswordHash")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("PhoneNumber")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(20)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(20)");
 
-                    b.Property<bool>("PhoneNumberConfirmed")
-                        .HasColumnType("bit");
+                    b.Property<string>("Role")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(10)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(10)")
+                        .HasDefaultValue("MEMBER");
 
-                    b.Property<string>("SecurityStamp")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("TwoFactorEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("UserName")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
+                    b.Property<string>("Username")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(50)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("NormalizedEmail")
-                        .HasDatabaseName("EmailIndex");
+                    b.HasIndex("Email")
+                        .IsUnique();
 
-                    b.HasIndex("NormalizedUserName")
+                    b.HasIndex("PhoneNumber")
                         .IsUnique()
-                        .HasDatabaseName("UserNameIndex")
-                        .HasFilter("[NormalizedUserName] IS NOT NULL");
+                        .HasFilter("[PhoneNumber] IS NOT NULL");
 
-                    b.ToTable("Users");
+                    b.HasIndex("Username")
+                        .IsUnique();
+
+                    b.ToTable("Account");
                 });
 
             modelBuilder.Entity("BusinessObjects.Models.Couple", b =>
@@ -97,16 +86,11 @@ namespace BusinessObjects.Migrations
                     b.Property<int?>("MoId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("ParentId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.HasIndex("FaId");
 
                     b.HasIndex("MoId");
-
-                    b.HasIndex("ParentId");
 
                     b.ToTable("Couple");
                 });
@@ -153,28 +137,6 @@ namespace BusinessObjects.Migrations
                     b.ToTable("Event");
                 });
 
-            modelBuilder.Entity("BusinessObjects.Models.EventAttendees", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("EventId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("MemberId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("EventId");
-
-                    b.HasIndex("MemberId");
-
-                    b.ToTable("EventAttendees");
-                });
-
             modelBuilder.Entity("BusinessObjects.Models.Family", b =>
                 {
                     b.Property<int>("Id")
@@ -199,11 +161,6 @@ namespace BusinessObjects.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<DateTime>("CreateDate")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValueSql("getdate()");
 
                     b.Property<int>("FamilyId")
                         .HasColumnType("int");
@@ -254,14 +211,11 @@ namespace BusinessObjects.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("AccountId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int?>("AccountId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime?>("BirthDate")
                         .HasColumnType("datetime2");
-
-                    b.Property<int?>("CoupleId")
-                        .HasColumnType("int");
 
                     b.Property<int?>("FamilyId")
                         .HasColumnType("int");
@@ -281,15 +235,18 @@ namespace BusinessObjects.Migrations
                         .HasMaxLength(300)
                         .HasColumnType("nvarchar(300)");
 
+                    b.Property<int?>("ParentId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("AccountId")
                         .IsUnique()
                         .HasFilter("[AccountId] IS NOT NULL");
 
-                    b.HasIndex("CoupleId");
-
                     b.HasIndex("FamilyId");
+
+                    b.HasIndex("ParentId");
 
                     b.ToTable("Member");
                 });
@@ -321,137 +278,6 @@ namespace BusinessObjects.Migrations
                     b.ToTable("Service");
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("NormalizedName")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NormalizedName")
-                        .IsUnique()
-                        .HasDatabaseName("RoleNameIndex")
-                        .HasFilter("[NormalizedName] IS NOT NULL");
-
-                    b.ToTable("Roles");
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("ClaimType")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ClaimValue")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("RoleId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("RoleId");
-
-                    b.ToTable("RoleClaims");
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("ClaimType")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ClaimValue")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("UserClaims");
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
-                {
-                    b.Property<string>("LoginProvider")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("ProviderKey")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("ProviderDisplayName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("LoginProvider", "ProviderKey");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("UserLogins");
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
-                {
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("RoleId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("UserId", "RoleId");
-
-                    b.HasIndex("RoleId");
-
-                    b.ToTable("UserRoles");
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
-                {
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("LoginProvider")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Value")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("UserId", "LoginProvider", "Name");
-
-                    b.ToTable("UserTokens");
-                });
-
             modelBuilder.Entity("BusinessObjects.Models.Couple", b =>
                 {
                     b.HasOne("BusinessObjects.Models.Member", "Father")
@@ -464,16 +290,9 @@ namespace BusinessObjects.Migrations
                         .HasForeignKey("MoId")
                         .HasConstraintName("FK_Mother_Couple_Member");
 
-                    b.HasOne("BusinessObjects.Models.Couple", "Parent")
-                        .WithMany("ChildsIsCouple")
-                        .HasForeignKey("ParentId")
-                        .HasConstraintName("FK_Parent_Couple_Couple");
-
                     b.Navigation("Father");
 
                     b.Navigation("Mother");
-
-                    b.Navigation("Parent");
                 });
 
             modelBuilder.Entity("BusinessObjects.Models.Event", b =>
@@ -504,27 +323,6 @@ namespace BusinessObjects.Migrations
                     b.Navigation("Location");
 
                     b.Navigation("Service");
-                });
-
-            modelBuilder.Entity("BusinessObjects.Models.EventAttendees", b =>
-                {
-                    b.HasOne("BusinessObjects.Models.Event", "Event")
-                        .WithMany("EventAttendees")
-                        .HasForeignKey("EventId")
-                        .HasConstraintName("FK_EventAttendees_Event")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("BusinessObjects.Models.Member", "Member")
-                        .WithMany("EventAttendees")
-                        .HasForeignKey("MemberId")
-                        .HasConstraintName("FK_EventAttendees_Member")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.Navigation("Event");
-
-                    b.Navigation("Member");
                 });
 
             modelBuilder.Entity("BusinessObjects.Models.Family", b =>
@@ -558,72 +356,21 @@ namespace BusinessObjects.Migrations
                         .HasForeignKey("BusinessObjects.Models.Member", "AccountId")
                         .HasConstraintName("FK_Member_Account");
 
-                    b.HasOne("BusinessObjects.Models.Couple", "Parent")
-                        .WithMany("ChildsIsMember")
-                        .HasForeignKey("CoupleId")
-                        .HasConstraintName("FK_Parent_Member_Couple");
-
                     b.HasOne("BusinessObjects.Models.Family", "Family")
                         .WithMany("Members")
                         .HasForeignKey("FamilyId")
                         .HasConstraintName("FK_Member_Family");
+
+                    b.HasOne("BusinessObjects.Models.Couple", "Parent")
+                        .WithMany("Childs")
+                        .HasForeignKey("ParentId")
+                        .HasConstraintName("FK_Parent_Member_Couple");
 
                     b.Navigation("Account");
 
                     b.Navigation("Family");
 
                     b.Navigation("Parent");
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
-                {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
-                        .WithMany()
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
-                {
-                    b.HasOne("BusinessObjects.Models.Account", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
-                {
-                    b.HasOne("BusinessObjects.Models.Account", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
-                {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
-                        .WithMany()
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("BusinessObjects.Models.Account", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
-                {
-                    b.HasOne("BusinessObjects.Models.Account", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("BusinessObjects.Models.Account", b =>
@@ -633,14 +380,7 @@ namespace BusinessObjects.Migrations
 
             modelBuilder.Entity("BusinessObjects.Models.Couple", b =>
                 {
-                    b.Navigation("ChildsIsCouple");
-
-                    b.Navigation("ChildsIsMember");
-                });
-
-            modelBuilder.Entity("BusinessObjects.Models.Event", b =>
-                {
-                    b.Navigation("EventAttendees");
+                    b.Navigation("Childs");
                 });
 
             modelBuilder.Entity("BusinessObjects.Models.Family", b =>
@@ -662,8 +402,6 @@ namespace BusinessObjects.Migrations
                     b.Navigation("CouplesFather");
 
                     b.Navigation("CouplesMother");
-
-                    b.Navigation("EventAttendees");
 
                     b.Navigation("FamilyCreated");
                 });

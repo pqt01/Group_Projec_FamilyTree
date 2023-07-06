@@ -4,14 +4,16 @@ using BusinessObjects.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BusinessObjects.Migrations
 {
     [DbContext(typeof(FUFamilyTreeContext))]
-    partial class FUFamilyTreeContextModelSnapshot : ModelSnapshot
+    [Migration("20230706043617_init_db_v6")]
+    partial class init_db_v6
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -97,16 +99,11 @@ namespace BusinessObjects.Migrations
                     b.Property<int?>("MoId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("ParentId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.HasIndex("FaId");
 
                     b.HasIndex("MoId");
-
-                    b.HasIndex("ParentId");
 
                     b.ToTable("Couple");
                 });
@@ -464,16 +461,9 @@ namespace BusinessObjects.Migrations
                         .HasForeignKey("MoId")
                         .HasConstraintName("FK_Mother_Couple_Member");
 
-                    b.HasOne("BusinessObjects.Models.Couple", "Parent")
-                        .WithMany("ChildsIsCouple")
-                        .HasForeignKey("ParentId")
-                        .HasConstraintName("FK_Parent_Couple_Couple");
-
                     b.Navigation("Father");
 
                     b.Navigation("Mother");
-
-                    b.Navigation("Parent");
                 });
 
             modelBuilder.Entity("BusinessObjects.Models.Event", b =>
@@ -559,7 +549,7 @@ namespace BusinessObjects.Migrations
                         .HasConstraintName("FK_Member_Account");
 
                     b.HasOne("BusinessObjects.Models.Couple", "Parent")
-                        .WithMany("ChildsIsMember")
+                        .WithMany("Childs")
                         .HasForeignKey("CoupleId")
                         .HasConstraintName("FK_Parent_Member_Couple");
 
@@ -633,9 +623,7 @@ namespace BusinessObjects.Migrations
 
             modelBuilder.Entity("BusinessObjects.Models.Couple", b =>
                 {
-                    b.Navigation("ChildsIsCouple");
-
-                    b.Navigation("ChildsIsMember");
+                    b.Navigation("Childs");
                 });
 
             modelBuilder.Entity("BusinessObjects.Models.Event", b =>
