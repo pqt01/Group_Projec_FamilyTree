@@ -9,5 +9,10 @@ namespace Repositorys
 {
 	public class AccountRepository: IAccountRepository
 	{
+		//private  _dao;
+		//public AdminRepository()
+		//{
+		//	_dao = new AdminDAO();
+		//}
 	}
 }

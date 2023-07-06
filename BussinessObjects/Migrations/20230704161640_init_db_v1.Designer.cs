@@ -4,14 +4,16 @@ using BusinessObjects.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BusinessObjects.Migrations
 {
     [DbContext(typeof(FUFamilyTreeContext))]
-    partial class FUFamilyTreeContextModelSnapshot : ModelSnapshot
+    [Migration("20230704161640_init_db_v1")]
+    partial class init_db_v1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -148,28 +150,6 @@ namespace BusinessObjects.Migrations
                     b.ToTable("Event");
                 });
 
-            modelBuilder.Entity("BusinessObjects.Models.EventAttendees", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("EventId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("MemberId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("EventId");
-
-                    b.HasIndex("MemberId");
-
-                    b.ToTable("EventAttendees");
-                });
-
             modelBuilder.Entity("BusinessObjects.Models.Family", b =>
                 {
                     b.Property<int>("Id")
@@ -196,9 +176,7 @@ namespace BusinessObjects.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<DateTime>("CreateDate")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValueSql("getdate()");
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("FamilyId")
                         .HasColumnType("int");
@@ -494,27 +472,6 @@ namespace BusinessObjects.Migrations
                     b.Navigation("Service");
                 });
 
-            modelBuilder.Entity("BusinessObjects.Models.EventAttendees", b =>
-                {
-                    b.HasOne("BusinessObjects.Models.Event", "Event")
-                        .WithMany("EventAttendees")
-                        .HasForeignKey("EventId")
-                        .HasConstraintName("FK_EventAttendees_Event")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("BusinessObjects.Models.Member", "Member")
-                        .WithMany("EventAttendees")
-                        .HasForeignKey("MemberId")
-                        .HasConstraintName("FK_EventAttendees_Member")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.Navigation("Event");
-
-                    b.Navigation("Member");
-                });
-
             modelBuilder.Entity("BusinessObjects.Models.Family", b =>
                 {
                     b.HasOne("BusinessObjects.Models.Member", "Creator")
@@ -624,11 +581,6 @@ namespace BusinessObjects.Migrations
                     b.Navigation("Childs");
                 });
 
-            modelBuilder.Entity("BusinessObjects.Models.Event", b =>
-                {
-                    b.Navigation("EventAttendees");
-                });
-
             modelBuilder.Entity("BusinessObjects.Models.Family", b =>
                 {
                     b.Navigation("Events");
@@ -648,8 +600,6 @@ namespace BusinessObjects.Migrations
                     b.Navigation("CouplesFather");
 
                     b.Navigation("CouplesMother");
-
-                    b.Navigation("EventAttendees");
 
                     b.Navigation("FamilyCreated");
                 });

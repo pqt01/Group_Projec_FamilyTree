@@ -1,0 +1,83 @@
+﻿@page
+@model Group_Project_FamilyTree.Pages.FamilyPage.ListMemberModel
+
+@{
+	ViewData["Title"] = "ListMember";
+}
+<style>
+	.album {
+		height: 100%;
+		width: 100%;
+	}
+
+	.image {
+		height: 100px;
+		width: 100px;
+		margin-bottom: 1px;
+	}
+</style>
+<h1>List member</h1>
+
+<div class="d-flex">
+	<a asp-page="./FamilyTree" class="btn btn-sm btn-info m-1">View family tree</a>
+	<a asp-page="Create" class="btn btn-sm btn-success m-1">Create member</a>
+	<div class="ml-auto">
+		<form method="get" asp-page="./Index">
+			<label>Search</label>
+			<input class="p-0" name="SearchString" />
+			<button type="submit" class="btn btn-sm btn-info m-1">Search</button>
+		</form>
+	</div>
+
+</div>
+<table class="table">
+	<thead>
+		<tr>
+			<th>
+				@Html.DisplayNameFor(model => model.Member[0].LinkAvatar)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.Member[0].FullName)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.Member[0].Gender)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.Member[0].BirthDate)
+			</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var item in Model.Member)
+		{
+			<tr>
+				<td>
+					<img class="image" src="~/image/@item.LinkAvatar" />
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.FullName)
+				</td>
+				@if (@item.Gender == true)
+				{
+					<td>
+						Male
+					</td>
+				}
+				else
+				{
+					<td>
+						Female
+					</td>
+				}
+				<td>
+					@Html.DisplayFor(modelItem => item.BirthDate)
+				</td>
+				<td>
+					<a asp-page="/AccountPage/UpdateProfile" asp-route-id="@item.Id" class="btn btn-sm btn-primary">Edit</a> |
+					<a asp-page="/AccountPage/DetailsProfile" asp-route-id="@item.Id" class="btn btn-sm btn-info">Details</a>
+				</td>
+			</tr>
+		}
+	</tbody>
+</table>
