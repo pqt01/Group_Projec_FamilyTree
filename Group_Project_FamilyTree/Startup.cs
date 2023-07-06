@@ -10,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Repositorys;
 using Repositorys.Interface;
+using System;
 
 namespace Group_Project_FamilyTree
 {
@@ -30,8 +31,13 @@ namespace Group_Project_FamilyTree
                 string connectString = Configuration.GetConnectionString("DB");
                 options.UseSqlServer(connectString);
             });
-            // Dang ky Identity
-            services.AddIdentity<Account, IdentityRole>()
+
+			services.AddSession(options =>
+			{
+				options.IdleTimeout = TimeSpan.FromMinutes(30);
+			});
+			// Dang ky Identity
+			services.AddIdentity<Account, IdentityRole>()
                     .AddEntityFrameworkStores<FUFamilyTreeContext>()
                     .AddDefaultTokenProviders();
 			services.ConfigureApplicationCookie(options => {
@@ -65,6 +71,8 @@ namespace Group_Project_FamilyTree
             app.UseSession();
             app.UseStaticFiles();
 
+
+			app.UseRouting();
             app.UseRouting();
 
 			app.UseAuthentication();

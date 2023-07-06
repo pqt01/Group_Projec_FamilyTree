@@ -15,9 +15,10 @@ namespace BusinessObjects.Models
 		public int LocationId { get; set; }
 		public decimal LocationPrice { get; set; }
 		public virtual Family Family { get; set; }
-		public virtual Service Service { get; set; }
-		public virtual Location Location { get; set; }
+        public virtual Service Service { get; set; }
+        public virtual Location Location { get; set; }
 		public virtual ICollection<EventAttendees> EventAttendees { get; set; }
+
 
     }
 }
