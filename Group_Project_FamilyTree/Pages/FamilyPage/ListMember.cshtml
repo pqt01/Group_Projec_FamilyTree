@@ -20,7 +20,7 @@
 
 <div class="d-flex">
 	<a asp-page="./FamilyTree" class="btn btn-sm btn-info m-1">View family tree</a>
-	<a asp-page="Create" class="btn btn-sm btn-success m-1">Create member</a>
+	<a asp-page="./CreateMember" class="btn btn-sm btn-success m-1">Create member</a>
 	<div class="ml-auto">
 		<form method="get" asp-page="./Index">
 			<label>Search</label>
@@ -60,15 +60,11 @@
 				</td>
 				@if (@item.Gender == true)
 				{
-					<td>
-						Male
-					</td>
+					<td>Male</td>
 				}
 				else
 				{
-					<td>
-						Female
-					</td>
+					<td>Female</td>
 				}
 				<td>
 					@Html.DisplayFor(modelItem => item.BirthDate)

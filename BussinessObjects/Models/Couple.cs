@@ -11,9 +11,12 @@ namespace BusinessObjects.Models
 		public int Id { get; set; }
 		public int? FaId { get; set; }
 		public int? MoId { get; set; }
+		public int? ParentId { get; set; }
+		public virtual Couple Parent { get; set; }
+		public virtual ICollection<Couple> ChildsIsCouple { get; set; }
 		public virtual Member Father { get; set; }
 		public virtual Member Mother { get; set; }
-		public virtual ICollection<Member> Childs { get; set; }
+		public virtual ICollection<Member> ChildsIsMember { get; set; }
 
 	}
 }

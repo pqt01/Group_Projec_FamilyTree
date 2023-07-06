@@ -97,11 +97,16 @@ namespace BusinessObjects.Migrations
                     b.Property<int?>("MoId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("ParentId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("FaId");
 
                     b.HasIndex("MoId");
+
+                    b.HasIndex("ParentId");
 
                     b.ToTable("Couple");
                 });
@@ -255,6 +260,9 @@ namespace BusinessObjects.Migrations
                     b.Property<DateTime?>("BirthDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<int?>("CoupleId")
+                        .HasColumnType("int");
+
                     b.Property<int?>("FamilyId")
                         .HasColumnType("int");
 
@@ -273,18 +281,15 @@ namespace BusinessObjects.Migrations
                         .HasMaxLength(300)
                         .HasColumnType("nvarchar(300)");
 
-                    b.Property<int?>("ParentId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.HasIndex("AccountId")
                         .IsUnique()
                         .HasFilter("[AccountId] IS NOT NULL");
 
-                    b.HasIndex("FamilyId");
+                    b.HasIndex("CoupleId");
 
-                    b.HasIndex("ParentId");
+                    b.HasIndex("FamilyId");
 
                     b.ToTable("Member");
                 });
@@ -459,9 +464,16 @@ namespace BusinessObjects.Migrations
                         .HasForeignKey("MoId")
                         .HasConstraintName("FK_Mother_Couple_Member");
 
+                    b.HasOne("BusinessObjects.Models.Couple", "Parent")
+                        .WithMany("ChildsIsCouple")
+                        .HasForeignKey("ParentId")
+                        .HasConstraintName("FK_Parent_Couple_Couple");
+
                     b.Navigation("Father");
 
                     b.Navigation("Mother");
+
+                    b.Navigation("Parent");
                 });
 
             modelBuilder.Entity("BusinessObjects.Models.Event", b =>
@@ -546,15 +558,15 @@ namespace BusinessObjects.Migrations
                         .HasForeignKey("BusinessObjects.Models.Member", "AccountId")
                         .HasConstraintName("FK_Member_Account");
 
+                    b.HasOne("BusinessObjects.Models.Couple", "Parent")
+                        .WithMany("ChildsIsMember")
+                        .HasForeignKey("CoupleId")
+                        .HasConstraintName("FK_Parent_Member_Couple");
+
                     b.HasOne("BusinessObjects.Models.Family", "Family")
                         .WithMany("Members")
                         .HasForeignKey("FamilyId")
                         .HasConstraintName("FK_Member_Family");
-
-                    b.HasOne("BusinessObjects.Models.Couple", "Parent")
-                        .WithMany("Childs")
-                        .HasForeignKey("ParentId")
-                        .HasConstraintName("FK_Parent_Member_Couple");
 
                     b.Navigation("Account");
 
@@ -621,7 +633,9 @@ namespace BusinessObjects.Migrations
 
             modelBuilder.Entity("BusinessObjects.Models.Couple", b =>
                 {
-                    b.Navigation("Childs");
+                    b.Navigation("ChildsIsCouple");
+
+                    b.Navigation("ChildsIsMember");
                 });
 
             modelBuilder.Entity("BusinessObjects.Models.Event", b =>
