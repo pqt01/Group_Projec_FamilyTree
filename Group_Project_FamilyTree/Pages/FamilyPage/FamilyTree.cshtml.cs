@@ -13,7 +13,7 @@ using System.Data;
 
 namespace Group_Project_FamilyTree.Pages.FamilyPage
 {
-	[Authorize(Roles = "Member")]
+	[Authorize(Roles = "Member,Admin")]
 	public class FamilyTreeModel : PageModel
 	{
 		private readonly IMemberRepository _memRepo;
