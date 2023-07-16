@@ -1,12 +1,15 @@
 ﻿using BusinessObjects.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Repositorys.Interface;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 
 namespace Group_Project_FamilyTree.Pages.AdminPage
 {
-    public class ViewFamilyTreeModel : PageModel
+	[Authorize(Roles = "Admin")]
+	public class ViewFamilyTreeModel : PageModel
     {
         private readonly IFamilyRepository _familyRepository;
 

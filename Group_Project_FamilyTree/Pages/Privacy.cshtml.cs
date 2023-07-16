@@ -4,7 +4,6 @@ using Microsoft.Extensions.Logging;
 
 namespace Group_Project_FamilyTree.Pages
 {
-    [Authorize(Roles = "Member")]
     public class PrivacyModel : PageModel
     {
         private readonly ILogger<PrivacyModel> _logger;

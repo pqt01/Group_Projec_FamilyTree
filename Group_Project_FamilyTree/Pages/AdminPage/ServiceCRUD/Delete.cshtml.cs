@@ -1,11 +1,14 @@
 ﻿using BusinessObjects.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Repositorys.Interface;
+using System.Data;
 
 namespace Group_Project_FamilyTree.Pages.AdminPage.ServiceCRUD
 {
-    public class DeleteModel : PageModel
+	[Authorize(Roles = "Admin")]
+	public class DeleteModel : PageModel
     {
         private readonly IServiceRepository _serviceRepo;
 

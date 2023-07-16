@@ -115,6 +115,7 @@ namespace Group_Project_FamilyTree.Pages.AccountPage
 					//role
 					List<string> roleNames = await _roleManager.Roles.Select(r => r.Name).ToListAsync();
 					var resultAdd = await _userManager.AddToRolesAsync(user, roleNames.Where(r => r == "Member"));
+
 					if (_userManager.Options.SignIn.RequireConfirmedAccount)
 					{
 						return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl });

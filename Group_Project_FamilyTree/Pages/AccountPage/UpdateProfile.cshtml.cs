@@ -20,7 +20,7 @@ using System.Data;
 
 namespace Group_Project_FamilyTree.Pages.AccountPage
 {
-	[Authorize(Roles = "Member")]
+	[Authorize(Roles = "Member,Admin")]
 	public class UpdateProfileModel : PageModel
 	{
 		private readonly IMemberRepository _memRepo;

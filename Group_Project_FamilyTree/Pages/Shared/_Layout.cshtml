@@ -23,7 +23,7 @@
 			<div class="container">
 				<a class="navbar-brand" asp-area="" asp-page="/Index">Group_Project_FamilyTree</a>
 				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse"
-					aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+						aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 					<span class="navbar-toggler-icon"></span>
 				</button>
 				<div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
@@ -44,8 +44,6 @@
 								<li class="nav-item">
 									<a class="nav-link text-dark" asp-area="" asp-page="/FamilyPage/Album">Album</a>
 								</li>
-							}@if (await UserManager.IsInRoleAsync(user, "Admin"))
-							{
 								<li class="nav-item">
 									<a class="nav-link text-dark" asp-area="" asp-page="/Accounts/Index">Accounts</a>
 								</li>
@@ -56,28 +54,32 @@
 									<a class="nav-link text-dark" asp-area="" asp-page="/Orders/Index">Orders</a>
 								</li>
 								<li class="nav-item">
+									<a class="nav-link text-dark" asp-area="" asp-page="/Services/Index">Services</a>
+								</li>
+								<li class="nav-item">
+									<a class="nav-link text-dark" asp-area="" asp-page="/Locations/Index">Locations</a>
+								</li>
+							}@if (await UserManager.IsInRoleAsync(user, "Admin"))
+							{
+								<li class="nav-item">
 									<a class="nav-link text-dark" asp-area="" asp-page="/AdminPage/ViewMember">Member</a>
 								</li>
 								<li class="nav-item">
 									<a class="nav-link text-dark" asp-area="" asp-page="/AdminPage/ViewEvent">Event</a>
 								</li>
 								<li class="nav-item">
-									<a class="nav-link text-dark" asp-area="" asp-page="/AdminPage/ViewFamilyTree">Family
-										Tree</a>
+									<a class="nav-link text-dark" asp-area="" asp-page="/AdminPage/ViewFamilyTree">
+										Family
+										Tree
+									</a>
 								</li>
 								<li class="nav-item">
 									<a class="nav-link text-dark" asp-area=""
-										asp-page="/AdminPage/ServiceCRUD/Index">Service</a>
+							   asp-page="/AdminPage/ServiceCRUD/Index">Service</a>
 								</li>
 								<li class="nav-item">
 									<a class="nav-link text-dark" asp-area=""
-										asp-page="/AdminPage/LocationCRUD/Index">Location</a>
-								</li>
-								<li class="nav-item">
-									<a class="nav-link text-dark" asp-area="" asp-page="/Services/Index">Services</a>
-								</li>
-								<li class="nav-item">
-									<a class="nav-link text-dark" asp-area="" asp-page="/Locations/Index">Locations</a>
+							   asp-page="/AdminPage/LocationCRUD/Index">Location</a>
 								</li>
 							}
 						}

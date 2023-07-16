@@ -1,12 +1,15 @@
 ﻿using BusinessObjects.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Repositorys.Interface;
 using System;
+using System.Data;
 
 namespace Group_Project_FamilyTree.Pages.AdminPage.LocationCRUD
 {
-    public class EditModel : PageModel
+	[Authorize(Roles = "Admin")]
+	public class EditModel : PageModel
     {
         private readonly ILocationRepository _locationRepo;
 

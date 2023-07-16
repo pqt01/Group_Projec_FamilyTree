@@ -1,11 +1,14 @@
 ﻿using BusinessObjects.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Repositorys.Interface;
+using System.Data;
 
 namespace Group_Project_FamilyTree.Pages.AdminPage.LocationCRUD
 {
-    public class CreateModel : PageModel
+	[Authorize(Roles = "Admin")]
+	public class CreateModel : PageModel
     {
         private readonly ILocationRepository _locationRepo;
 
