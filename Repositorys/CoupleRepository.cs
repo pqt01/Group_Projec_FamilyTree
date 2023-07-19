@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace Repositorys
 {
-    public class CoupleRepository : ICoupleRepository
+    public class MateRepository : IMateRepository
     {
-        private readonly CoupleDAO _context = new CoupleDAO();
-        public Couple GetById(int id) => _context.GetById(id);
+        private readonly MateDAO _context = new MateDAO();
+        public Mate GetById(int id) => _context.GetById(id);
     }
 }

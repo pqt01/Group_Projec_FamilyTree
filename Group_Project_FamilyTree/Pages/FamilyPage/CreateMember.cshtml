@@ -4,27 +4,40 @@
 @{
     ViewData["Title"] = "CreateMember";
 }
+<style>
+    .album {
+        height: 100%;
+        width: 100%;
+    }
 
+    .image {
+        height: 200px;
+        width: 200px;
+        margin-bottom: 5px;
+    }
+</style>
 <h1>CreateMember</h1>
 
 <h4>Member</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form method="post">
+        <form method="post" enctype="multipart/form-data">
+            <div class="form-group">
+                <label asp-for="Member.LinkAvatar" class="control-label"></label>
+                <input type="hidden" asp-for="Member.LinkAvatar" class="form-control" />
+                <input asp-for="@Model.FileUpload" class="form-control" />
+                <span asp-validation-for="Member.LinkAvatar" class="text-danger"></span>
+            </div>
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Member.AccountId" />
-            <input type="hidden" asp-for="Member.CoupleId" />
+            <input type="hidden" asp-for="Member.MateId" />
             <input type="hidden" asp-for="Member.FamilyId" />
+            <input type="hidden" asp-for="Member.LinkAvatar" />
             <div class="form-group">
                 <label asp-for="Member.FullName" class="control-label"></label>
                 <input asp-for="Member.FullName" required class="form-control" />
                 <span asp-validation-for="Member.FullName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Member.LinkAvatar" class="control-label"></label>
-                <input asp-for="Member.LinkAvatar" class="form-control" />
-                <span asp-validation-for="Member.LinkAvatar" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Member.BirthDate" class="control-label"></label>
@@ -40,7 +53,7 @@
                 <label class="control-label">Relationship</label>
                 <select asp-for="Relationship" class="form-control">
                     <option value="1">Parent</option>
-                    <option value="2">Couple</option>
+                    <option value="2">Mate</option>
                     <option value="3">Child</option>
                 </select>
                 <label class="control-label">of</label>

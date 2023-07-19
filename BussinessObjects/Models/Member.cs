@@ -17,15 +17,13 @@ namespace BusinessObjects.Models
 		public bool Gender { get; set; }
 		[DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
 		public DateTime? BirthDate { get; set; }
-		public int? CoupleId { get; set; }
+		public int? MateId { get; set; }
 		public string AccountId { get; set; }
 		public int? FamilyId { get; set; }
 		public virtual Account Account { get; set; }
 		public virtual Family Family { get; set; }
 		public virtual Family FamilyCreated { get; set; }
-		public virtual Couple Parent { get; set; }
-		public virtual ICollection<Couple> CouplesFather { get; set; }
-		public virtual ICollection<Couple> CouplesMother { get; set; }
+		public virtual Mate Mate { get; set; }
 		public virtual ICollection<EventAttendees> EventAttendees { get; set; }
 
 	}

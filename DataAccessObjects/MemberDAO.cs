@@ -66,5 +66,9 @@ namespace DataAccessObjects
 		{
 			return _context.Members.Where(m => m.FamilyId == id).ToList();
 		}
+		public List<Member> GetByMateId(int id)
+		{
+			return _context.Members.Where(m => m.MateId == id).ToList();
+		}
 	}
 }

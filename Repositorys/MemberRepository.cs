@@ -5,97 +5,99 @@ using System.Collections.Generic;
 
 namespace Repositorys
 {
-	public class MemberRepository : IMemberRepository
-	{
-		private readonly MemberDAO _context = new MemberDAO();
-		private readonly CoupleDAO _cpDao = new CoupleDAO();
-		public List<Member> GetAllFamyliById(int id) => _context.GetAllByFamyliId(id);
-		public Member GetById(int id) => _context.GetById(id);
-		public Member GetMemberByAccountId(string id) => _context.GetMemberByAccountId(id);
-		public void Add(Member member) => _context.Add(member);
-		public void UpdateAttach(Member member) => _context.UpdateAttach(member);
-		public bool AddMemberFamilyTree(Member member, int relationId, int relationMemberId)
-		{
-			bool result = true;
-			Member child = _context.GetById(relationMemberId);
-			Couple couple = new Couple();
-			switch (relationId)
-			{
-				//parent of
-				case 1:
-					if (!_cpDao.ValidParent(member, child)) return false;
-					//create member
-					_context.Add(member);
-					//create couple
-					couple = new Couple();
-					if (member.Gender == true) { couple.FaId = member.Id; }
-					else { couple.MoId = member.Id; }
-					_cpDao.Add(couple);
-					//update member relationship
-					int id = _cpDao.GetMaxId();
-					if (_cpDao.IsExistCouple(child))
-					{
-						couple = _cpDao.GetById(child.Id);
-						couple.ParentId = _cpDao.GetMaxId();
-						_cpDao.UpdateAttach(couple);
-					}
-					else
-					{
-						child.CoupleId = id;
-						_context.UpdateAttach(child);
-					}
-					break;
-				//couple of
-				case 2:
-					if (!_cpDao.ValidCouple(member, child)) return false;
-					//create member
-					_context.Add(member);
-					//create couple
-					if (_cpDao.IsExistCouple(child))
-					{
-						couple = _cpDao.GetById((int)child.CoupleId);
-						if (member.Gender == true) { couple.FaId = member.Id; }
-						else { couple.MoId = member.Id; }
-						//change parent
-						_cpDao.UpdateAttach(couple);
-						//update couple Id
-						member.CoupleId = couple.Id;
-						_context.UpdateAttach(member);
-					}
-					else
-					{
-						couple = new Couple();
-						if (child.CoupleId != null)
-						{
-							couple.ParentId = child.CoupleId;
-						}
-						if (member.Gender == true)
-						{
-							couple.FaId = member.Id;
-							couple.MoId = child.Id;
-						}
-						else
-						{
-							couple.MoId = member.Id;
-							couple.FaId = child.Id;
-						}
-						//craete couple
-						_cpDao.Add(couple);
-						//update member
-						int tmpId = _cpDao.GetMaxId();
-						child.CoupleId = tmpId;
-						member.CoupleId = tmpId;
-						_context.UpdateAttach(child);
-					}
-					break;
-				//child of
-				case 3:
-					break;
-				default:
-					break;
-			}
-			return result;
-		}
-		public List<Member> GetMembers() => _context.GetAll();
-	}
+    public class MemberRepository : IMemberRepository
+    {
+        private readonly MemberDAO _context = new MemberDAO();
+        private readonly MateDAO _mateDao = new MateDAO();
+        public List<Member> GetAllFamyliById(int id) => _context.GetAllByFamyliId(id);
+        public Member GetById(int id) => _context.GetById(id);
+        public Member GetMemberByAccountId(string id) => _context.GetMemberByAccountId(id);
+        public void Add(Member member) => _context.Add(member);
+        public void UpdateAttach(Member member) => _context.UpdateAttach(member);
+        void InitMate(Member member)
+        {
+            if (member.MateId == null)
+            {
+                Mate mate = new Mate();
+                _mateDao.Add(mate);
+                int mateId = _mateDao.GetMaxId();
+                member.MateId = mateId;
+                _context.UpdateAttach(member);
+            }
+        }
+        public bool CreateMateMember(Member member, Member relationMember)
+        {
+            if (_mateDao.GenderIsValid(member, relationMember))
+            {
+                _context.Add(member);
+                return true;
+            }
+            return false;
+        }
+        public bool AddMemberFamilyTree(Member member, int relationId, int relationMemberId)
+        {
+            bool result = true;
+            Member child = _context.GetById(relationMemberId);
+            Mate mate = new Mate();
+            try
+            {
+                InitMate(child);
+                switch (relationId)
+                {
+                    //parent of
+                    case 1:
+                        mate = _mateDao.GetById((int)child.MateId);
+                        if (mate.ParentId == null)
+                        {
+                            _context.Add(member);
+                            member.Id = _context.GetMaxId();
+                            InitMate(member);
+                            int parentId = _mateDao.GetMaxId();
+                            mate.ParentId = parentId;
+                            _mateDao.UpdateAttach(mate);
+                        }
+                        else
+                        {
+                            List<Member> parents = _context.GetByMateId((int)mate.ParentId);
+                            bool isGenderValid = false;
+                            foreach (var item in parents)
+                            {
+                                if (_mateDao.GenderIsValid(member, item))
+                                {
+                                    isGenderValid = true;
+                                }
+                            }
+                            if (isGenderValid)
+                            {
+                                member.MateId = mate.ParentId;
+                                _context.Add(member);
+                            }
+                        }
+                        break;
+                    //couple of
+                    case 2:
+                        member.MateId = child.MateId;
+                        result = CreateMateMember(member, child);
+                        break;
+                    //child of
+                    case 3:
+                        _context.Add(member);
+                        member.Id = _context.GetMaxId();
+                        InitMate(member);
+                        mate = _mateDao.GetById((int)member.MateId);
+                        mate.ParentId = child.MateId;
+                        _mateDao.UpdateAttach(mate);
+                        break;
+                    default:
+                        break;
+                }
+        }
+            catch (System.Exception)
+            {
+                result = false;
+            }
+            return result;
+        }
+        public List<Member> GetMembers() => _context.GetAll();
+    }
 }

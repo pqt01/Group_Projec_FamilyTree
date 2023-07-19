@@ -11,7 +11,7 @@ namespace BusinessObjects.Models
 		#region DbSet
 		public DbSet<Member> Members { get; set; }
 		public DbSet<Family> Families { get; set; }
-		public DbSet<Couple> Couples { get; set; }
+		public DbSet<Mate> Mates { get; set; }
 		public DbSet<Image> Images { get; set; }
 		public DbSet<Event> Events { get; set; }
 		public DbSet<EventAttendees> EventAttendees { get; set; }
@@ -96,32 +96,24 @@ namespace BusinessObjects.Models
 					.WithOne(e => e.Member)
 					.HasForeignKey<Member>(e => e.AccountId)
 					.HasConstraintName("FK_Member_Account");
-				entity.HasOne(e => e.Parent)
-					.WithMany(e => e.ChildsIsMember)
-					.HasForeignKey(e => e.CoupleId)
-					.HasConstraintName("FK_Parent_Member_Couple");
+				entity.HasOne(e => e.Mate)
+					.WithMany(e => e.Members)
+					.HasForeignKey(e => e.MateId)
+					.HasConstraintName("FK_Member_Mate");
 				entity.HasOne(e => e.Family)
 					.WithMany(e => e.Members)
 					.HasForeignKey(e => e.FamilyId)
 					.HasConstraintName("FK_Member_Family");
 			});
-			modelBuilder.Entity<Couple>(entity =>
+			modelBuilder.Entity<Mate>(entity =>
 			{
-				entity.ToTable("Couple").HasKey(e => e.Id);
+				entity.ToTable("Mate").HasKey(e => e.Id);
 				entity.Property(e => e.Id)
 					.ValueGeneratedOnAdd();
-				entity.HasOne(e => e.Father)
-					.WithMany(e => e.CouplesFather)
-					.HasForeignKey(e => e.FaId)
-					.HasConstraintName("FK_Father_Couple_Member");
-				entity.HasOne(e => e.Mother)
-					.WithMany(e => e.CouplesMother)
-					.HasForeignKey(e => e.MoId)
-					.HasConstraintName("FK_Mother_Couple_Member");
 				entity.HasOne(e => e.Parent)
-					.WithMany(e => e.ChildsIsCouple)
+					.WithMany(e => e.Children)
 					.HasForeignKey(e => e.ParentId)
-					.HasConstraintName("FK_Parent_Couple_Couple");
+					.HasConstraintName("FK_Mate_Mate");
 			});
 			modelBuilder.Entity<Family>(entity =>
 			{

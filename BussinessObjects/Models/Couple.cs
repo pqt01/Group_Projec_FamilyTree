@@ -6,17 +6,13 @@ using System.Threading.Tasks;
 
 namespace BusinessObjects.Models
 {
-	public class Couple
+	public class Mate
 	{
 		public int Id { get; set; }
-		public int? FaId { get; set; }
-		public int? MoId { get; set; }
 		public int? ParentId { get; set; }
-		public virtual Couple Parent { get; set; }
-		public virtual ICollection<Couple> ChildsIsCouple { get; set; }
-		public virtual Member Father { get; set; }
-		public virtual Member Mother { get; set; }
-		public virtual ICollection<Member> ChildsIsMember { get; set; }
+		public virtual Mate Parent { get; set; }
+		public virtual ICollection<Mate> Children { get; set; }
+		public virtual ICollection<Member> Members { get; set; }
 
 	}
 }

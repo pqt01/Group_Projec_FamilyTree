@@ -11,6 +11,12 @@ using Microsoft.AspNetCore.Identity;
 using Repositorys;
 using Microsoft.AspNetCore.Authorization;
 using System.Data;
+using Group_Project_FamilyTree.Helper;
+using Microsoft.Extensions.Hosting;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using System.ComponentModel.DataAnnotations;
+using System.Xml.Linq;
 
 namespace Group_Project_FamilyTree.Pages.FamilyPage
 {
@@ -19,11 +25,14 @@ namespace Group_Project_FamilyTree.Pages.FamilyPage
     {
         private readonly IMemberRepository _memRepo;
         private readonly UserManager<Account> _userManager;
+        private readonly UploadImage _uploadImage;
 
-        public CreateMemberModel(UserManager<Account> userManager)
+        public CreateMemberModel(UserManager<Account> userManager, 
+            IWebHostEnvironment environment)
         {
             _memRepo = new MemberRepository();
             _userManager = userManager;
+            _uploadImage = new UploadImage(environment);
         }
 
         public IActionResult OnGet()
@@ -31,22 +40,38 @@ namespace Group_Project_FamilyTree.Pages.FamilyPage
             GetData();
             return Page();
         }
-
         [BindProperty]
         public Member Member { get; set; }
+
+        [DataType(DataType.Upload)]
+        [CheckFileExtensions(Extensions = "png,jpg,jpeg,gif")]
+        [Display(Name = "Image upload")]
+        [BindProperty]
+        public IFormFile FileUpload { get; set; }
         [BindProperty]
         public int Relationship { get; set; }
         [BindProperty]
         public int RelationshipMemberId { get; set; }
 
-        public IActionResult OnPost()
+        public async Task<IActionResult> OnPostAsync()
         {
-            if (!ModelState.IsValid)
+            //if (!ModelState.IsValid)
+            //{
+            //    GetData();
+            //    return Page();
+            //}
+            if (FileUpload != null)
             {
-                GetData();
-                return Page();
+                string fileName = _uploadImage.GetImageFileName(FileUpload);
+                Member.LinkAvatar = fileName;
+                await _uploadImage.WriteImageFileAsync(FileUpload, fileName);
             }
-			string id = _userManager.GetUserId(User);
+            else
+            {
+                Member.LinkAvatar = "urserImage_default.png";
+            }
+
+            string id = _userManager.GetUserId(User);
 			Member m = _memRepo.GetMemberByAccountId(id);
 			Member.FamilyId = m.FamilyId;
 

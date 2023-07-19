@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace Repositorys.Interface
 {
-    public interface ICoupleRepository
-    {
-        public Couple GetById(int id);
+    public interface IMateRepository
+	{
+        public Mate GetById(int id);
     }
 }
